@@ -13,9 +13,9 @@ function App() {
       <Navbar />
 
       <Projects/>
-      <ProjectDetails/>
-      <Departments/>
-      <Events/>
+      {/* <ProjectDetails/> */}
+      {/* <Departments/> */}
+      {/* <Events/> */}
 
     </>
   )

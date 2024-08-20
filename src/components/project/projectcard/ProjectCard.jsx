@@ -34,10 +34,6 @@ const ProjectCard = () => {
                         <div className='projtasks-label b-tag'></div>
                         <span className="task-label-info">In Progress: 5</span>
                     </div>
-                    <div className='projtasks-cat Pending'>
-                        <div className='projtasks-label y-tag'></div>
-                        <span className="task-label-info">Pending: 5</span>
-                    </div>
                 </div>
 
             </div>

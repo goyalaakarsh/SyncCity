@@ -13,12 +13,6 @@ const Projects = () => {
             <div className="project-cards">
                 <ProjectCard />
                 <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
-                <ProjectCard />
             </div>
 
         </div>

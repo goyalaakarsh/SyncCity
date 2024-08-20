@@ -1,5 +1,6 @@
 .ProjTasks {
     min-width: 30rem;
+    max-width: 32rem;
 }
 
 .proj-tasks span {
@@ -34,6 +35,7 @@
 
 .tasks-cat-list i {
     margin-right: 0.6rem;
+
 }
 
 .tasks-list {
@@ -41,10 +43,101 @@
     margin-top: 1rem;
 }
 
+.tasks-list i {
+    cursor: pointer;
+}
+
 .tasks-cat-list {
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 .task-item {
-    margin-bottom: 0.5rem;
+    margin: 2rem 0;
+}
+
+.task-actions {
+    margin-left: 1rem;
+    font-size: 0.8rem;
+    color: var(--m3);
+}
+
+.task-actions i {
+    transition: 0.15s;
+}
+
+.task-actions i:hover {
+    color: var(--m2);
+}
+
+/* Tooltip container */
+.task-item {
+    position: relative;
+    /* display: inline-block; */
+    /* cursor: pointer; */
+}
+
+.task-item .tooltiptext {
+    visibility: hidden;
+    width: 140px;
+    background-color: var(--m5);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position above the task item */
+    /* left: 50%; */
+    margin-left: -60px; 
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.task-item i:hover + .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.task-item .task-actions {
+    visibility: hidden;
+    transition: 0.1s;
+}
+.task-item:hover .task-actions {
+    visibility: visible;
+}
+
+.task-deadline {
+    display: flex;
+    /* gap: 0.1rem; */
+    align-items: center;
+    color: var(--m2);
+    margin: 0.3rem 0 0 2rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.info-icon {
+    /* background-color: var(--m3); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.8rem;
+}
+
+.info-icon i {
+    font-size: 0.9rem;
+}
+
+.task-deadline span {
+    font-size: 0.8rem;
+}
+
+.task-extras {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
