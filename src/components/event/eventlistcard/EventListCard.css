@@ -1,0 +1,14 @@
+.eventlistcard {
+    margin: 1rem 0;
+}
+
+.eventcard-tags {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap:  wrap;
+}
+
+.eventcard-tags span {
+    font-size: 0.8rem;
+}
+

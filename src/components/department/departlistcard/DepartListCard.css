@@ -1,0 +1,13 @@
+.departlistcard {
+    margin: 1rem 0;
+}
+
+.departcard-tags {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap:  wrap;
+}
+
+.departcard-tags span {
+    font-size: 0.8rem;
+}

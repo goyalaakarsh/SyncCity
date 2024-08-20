@@ -1,0 +1,5 @@
+.events-comp {
+    display: flex;
+    gap: 4rem;
+    margin-top: 1rem;
+}

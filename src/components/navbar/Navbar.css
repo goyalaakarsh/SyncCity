@@ -1,0 +1,49 @@
+.navbar {
+    background-color: var(--m4);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1.5rem 2rem ;
+    margin: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo img{
+    width: 160px;
+}
+
+.navbar_link {
+    color: var(--m2);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nav_active_link {
+    color: var(--m1);
+}
+
+.navbar_icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.profile-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.bell-icon {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--m3);
+    color: var(--m4);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 50%;
+
+}
