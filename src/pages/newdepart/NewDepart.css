@@ -1,0 +1,8 @@
+.depart-desc-inp {
+    width: 20rem;
+    margin: 0;
+}
+
+.depart-desc-inp textarea {
+    height: 14rem;
+}

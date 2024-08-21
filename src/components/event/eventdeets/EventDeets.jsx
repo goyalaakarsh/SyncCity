@@ -7,8 +7,17 @@ const EventDeets = () => {
             <div className="eventinfo">
                 <img className='eventlogo' src="https://media.istockphoto.com/id/866715034/vector/entrepreneurs-and-business-people-conference-in-modern-meeting-room.jpg?s=612x612&w=0&k=20&c=HViAYHb_7ZXDuoWEM113lHzShRMBFShmHw2LbuwhNJA=" alt="" />
                 <h5 className="eventname">Name of the event</h5>
-                <button className="discussbtn mainbtn"><i className="tag-icon far fa-calendar-alt"></i>
-                    20/08/2024 - 23/09/2027</button>
+                <div className="event-actions">
+                    <button className="discussbtn mainbtn">
+                        <i className="tag-icon far fa-calendar-alt"></i>20/08/2024 - 23/09/2027
+                    </button>
+                    <button className="discussbtn mainbtn">
+                        <i className="fa-solid fa-earth-americas"></i>Mode: Online
+                    </button>
+                    <button className="discussbtn mainbtn">
+                        <i className="fa-solid fa-link"></i>Join
+                    </button>
+                </div>
 
             </div>
 
@@ -34,7 +43,7 @@ const EventDeets = () => {
             </div> */}
 
             <div className="event-desc">
-                <h5>Description:</h5>
+                <h5>Details</h5>
                 <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Doloremque, id porro odit nisi nam a hic. Dolor dolorum, aliquam aspernatur blanditiis accusamus doloribus natus obcaecati in non consequatur eum modi?
                     Dolorum unde nulla eaque odit voluptatem quis accusamus, laborum voluptatum id eligendi explicabo sint natus! Beatae delectus eligendi numquam laudantium dolorum fugiat, facilis blanditiis maxime magnam quaerat ea asperiores vitae?
                     Impedit minus laboriosam omnis id ut doloribus neque eaque rem quasi debitis nesciunt maiores consequuntur voluptatibus porro enim corporis ducimus ex libero tenetur iusto animi voluptates, laborum numquam nam? Dolorem!

@@ -6,7 +6,7 @@ const ProjectCard = () => {
         <div className="project-card card">
             <h5 className="project-title">Title of the Projectwesdwsd,fdewdfdsm</h5>
 
-            <div className="proj-info">
+            <div className="project-inform">
                 <div className="projinfo-item">
                 <i className="fa-solid fa-calendar-days"></i>
                     <span>20/08/2024 - 23/09/2025</span>
@@ -25,7 +25,7 @@ const ProjectCard = () => {
 
             <div className="projcard-tasks">
                 <span className='projtask-head'>Tasks:</span>
-                <div className="projtasks-cats">
+                <div className="projecttask-cats ">
                     <div className='projtasks-cat completed'>
                         <div className='projtasks-label g-tag'></div>
                         <span className="task-label-info">Completed: 5</span>

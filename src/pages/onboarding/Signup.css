@@ -1,0 +1,21 @@
+
+
+.login-text {
+    margin: 0;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.using-google {
+    
+    margin: auto;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.divider {
+    background-color: var(--m3);
+    width: 30rem;
+    height: 2px;
+    margin: auto;
+}

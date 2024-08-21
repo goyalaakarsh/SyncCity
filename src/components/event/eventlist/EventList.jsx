@@ -6,9 +6,9 @@ const EventList = () => {
     return (
         <div className="eventlist">
             <div className="upcomingevents">
-                <span className="task-cat-tag b-tag">
+                <span className="task-cat-tag y-tag">
                     <i className="tag-icon fa-regular fa-circle-dot"></i>
-                    <span>In Progress</span>
+                    <span>Upcoming</span>
                 </span>
                 <EventListCard />
                 <EventListCard />

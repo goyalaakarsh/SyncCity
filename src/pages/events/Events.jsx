@@ -8,6 +8,7 @@ const Events = () => {
     <div className="maincon">
     <div className="events-topcon">
         <p className="heading">Events</p>
+        <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button>
     </div>
 
     <div className="events-comp">

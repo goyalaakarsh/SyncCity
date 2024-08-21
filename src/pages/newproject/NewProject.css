@@ -1,0 +1,121 @@
+.new-proj-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.new-proj-form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: var(--font-medium);
+    font-size: 1.1rem;
+}
+
+.new-proj-form input,
+.new-proj-form select,
+.new-proj-form textarea {
+    padding: 0.5rem 1rem;
+    margin: 0.7rem 0;
+    background-color: var(--m4);
+    color: var(--m1);
+    border: none;
+    border-radius: 0.3rem;
+    
+}
+
+.input-component {
+    margin: 1rem 0;
+}
+
+/* form {
+    max-width: 40rem;
+    margin: 0 auto;
+} */
+
+.loc-date-con {
+    width: 100% !important;
+    margin: auto;
+    display: flex;
+    gap: 2rem;
+}
+
+#start-date, #end-date {
+    width: 100%;
+}
+
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    bottom: 7rem;
+    background: var(--m4);
+    color: var(--m1);
+    z-index: 1000;
+    width: 95%;
+    border-radius: 0.5rem;
+}
+
+.autocomplete-suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+    background: var(--m3);
+}
+
+.np-user-img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.member-con {
+    width: 100% !important;
+    margin: auto;
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.sel-manager-con, .sel-mem-con {
+    max-height: 20rem;
+
+}
+
+.sel-manager-con, .sel-mem-con {
+    width: 100%;
+}
+
+.card {
+    cursor:auto;
+}
+
+.manager-drop-item, .member-drop-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.3rem;
+    transition: 0.1s;
+    align-items: center;
+}
+
+.manager-drop-item:hover, .member-drop-item:hover {
+    background-color: var(--m3);
+}
+.manager-drop, .member-drop  {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    overflow: auto;
+    background-color: var(--m4);
+}
+
+.creatproj {
+    /* width: 10rem; */
+    /* margin: auto; */
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+}

@@ -1,0 +1,60 @@
+/* Home.css */
+.home-con {
+    background-image: url('../../assets/homebg.png');
+    background-size: cover;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.intro-con {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 4rem auto;
+}
+
+.intro-line {
+    font-size: 3.8rem;
+    color: white;
+    font-weight: var(--font-bold);
+    margin-bottom: 1rem;
+}
+.intro-line2 {
+    font-size: 3.5rem;
+    background: linear-gradient(270deg, rgba(153, 78, 215, 1) 0%, rgba(107, 149, 247, 1) 100%);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-weight: var(--font-bold);
+    margin-bottom: 1rem;
+}
+
+.intro-line3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 1rem;
+}
+
+.homebtnlogo {
+    width: 7rem;
+    margin-left: 0.2rem;
+
+}
+
+.getstartedbtn {
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    margin: 3rem auto 0;
+}
+
+.illus-con img {
+    width: 35rem;
+}

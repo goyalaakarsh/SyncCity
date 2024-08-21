@@ -8,6 +8,7 @@ const Departments = () => {
         <div className="maincon">
             <div className="depart-topcon">
                 <p className="heading">Departments</p>
+                <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button>
             </div>
 
             <div className="depart-comp">

@@ -56,3 +56,8 @@
 .event-desc h5 {
     margin-bottom: 1rem;
 }
+
+.event-actions {
+    display: flex;
+    gap: 1rem;
+}
