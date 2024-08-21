@@ -145,6 +145,27 @@ body {
   margin-right: 0.5rem;
 }
 
+.withai {
+  color: var(--m1);
+  cursor: pointer;
+  display: inline-block; 
+  font-weight: var(--font-semi-bold);
+  /* font-family: "Montserrat", sans-serif; */
+  background: linear-gradient(270deg, rgba(153, 78, 215, 1) 0%, rgba(107, 149, 247, 1) 100%);
+  font-size: 1.1rem;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.aibtn {
+  background-color: var(--m3);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.8rem 1.1rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
 
 /* Containers */
 

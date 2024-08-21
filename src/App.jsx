@@ -12,10 +12,10 @@ function App() {
     <>
       <Navbar />
 
-      <Projects/>
-      {/* <ProjectDetails/> */}
-      {/* <Departments/> */}
-      {/* <Events/> */}
+      {/* <Projects/> */}
+      <ProjectDetails/>
+      {/* <Departments/>
+      <Events/> */}
 
     </>
   )

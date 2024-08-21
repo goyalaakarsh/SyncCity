@@ -102,7 +102,6 @@
 
 .task-item .task-actions {
     visibility: hidden;
-    transition: 0.1s;
 }
 .task-item:hover .task-actions {
     visibility: visible;

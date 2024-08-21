@@ -16,6 +16,11 @@
     font-size: 0.85rem;
 }
 
+.proj-actions {
+    display: flex;
+    gap: 1rem;
+}
+
 .proj-info {
     display: flex;
     flex-direction: column;
