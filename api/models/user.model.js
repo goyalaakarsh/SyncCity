@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role: {// for roles 0 -> root, 1 -> admin, 2 -> employee
+    role: {// for roles 0 -> root, 1 -> admin, 2 -> employee, >= 3 -> testing
         type: Number,
         required: true,
         default: 2
@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
     },
     isManager: {
         type: Boolean,
+        required: true,
         default: false,
     },
     avatar: {
