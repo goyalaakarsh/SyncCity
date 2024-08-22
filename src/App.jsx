@@ -10,23 +10,13 @@ import Signup from './pages/onboarding/Signup'
 import Login from './pages/onboarding/Login'
 import NewDepart from './pages/newdepart/NewDepart'
 import Home from './pages/home/Home'
+import AppRoutes from './Routes'
 
 function App() {
 
   return (
     <>
-      <Home/>
-      {/* <Navbar />
-
-      <Projects/>
-      <ProjectDetails/>
-      <Departments/>
-      <Events/>
-      <NewProject/>
-      <Signup/>
-      <Login/>
-      <NewDepart/> */}
-
+      <AppRoutes />
     </>
   )
 }

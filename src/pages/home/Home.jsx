@@ -19,9 +19,11 @@ const Home = () => {
                 <span>Reimagining collaboration with every click. <br /> Where your vision seamlessly meets action, and innovation takes the lead.</span>
             </div>
 
-            <button className="getstartedbtn">
+            <a href="/signup">
+            <button className="getstartedbtn" >
                 Get started with <img className='homebtnlogo' src={Logo} alt="" /> 
             </button>
+            </a>
         </div>
 
         <div className="illus-con">
