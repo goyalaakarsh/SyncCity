@@ -19,7 +19,7 @@ const Home = () => {
                 <span>Reimagining collaboration with every click. <br /> Where your vision seamlessly meets action, and innovation takes the lead.</span>
             </div>
 
-            <a href="/signup">
+            <a href="/login">
             <button className="getstartedbtn" >
                 Get started with <img className='homebtnlogo' src={Logo} alt="" /> 
             </button>

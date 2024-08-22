@@ -258,114 +258,24 @@ img {
   height: auto;
 }
 
-
-/* Reusable CSS classes */
-.section {
-  padding: 2rem 0 2rem;
-  
-
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.section_title {
-  font-size: var(--h2-font-size);
-  color: var(--title-color);
+::-webkit-scrollbar-track {
+  background: var(--m5);
 }
 
-.section_title {
-  position: relative;
-  display: inline-block; 
-  margin-bottom: 1.5rem; 
+::-webkit-scrollbar-thumb {
+  background: var(--m4);
+  transition: 0.1s;
 }
 
-.section_title::after {
-  content: "";
-  position: absolute;
-  width: 80px; /* Set the width of the underline */
-  height: 4px; /* Set the height of the underline */
-  background-color: var(--title-yellow); /* Use the color variable */
-  bottom: -0.5rem; /* Adjust as necessary for spacing below the title */
-  left: 0; /* Align it to the left */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--m4);
 }
 
-
-.section_subtitle {
-  display: block;
-  margin-bottom: 2rem;
-  font-size: var(--small-font-size);
-}
-
-.section_title,
-.section_subtitle {
-  text-align: left;
-}
-
-.divider {
-  height: 2.5px;
-  width: 100%;
-  background-color: var(--text-color-light);
-  opacity: 0.3;
-  border-radius: 15px;
-  margin: 2rem 0 0 0;
-}
-
-/* Layout */
-.container {
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.grid {
-  display: grid;
-  gap: 1.5rem;
-}
-
-/* Buttons */
-
-.button {
-  display: inline-block;
-  background-color: var(--title-color);
-  color: var(--container-color);
-  padding: 0.75rem 2rem;
-  border-radius: 0.6rem;
-  font-weight: var(--font-medium);
-  transition: 0.3s;
-}
-
-.button:hover {
-  background-color: var(--title-color-dark);
-}
-
-.button_icon {
-  margin-left: var(--mb-0-5);
-}
-
-.button--flex {
-  display: inline-flex;
-  align-items: center;
-}
-
-@media screen and (max-width: 992px) {
-  .container {
-    margin-left: var(--mb-1-5);
-    margin-right: var(--mb-1-5);
-  }
-}
-
-/* For 768px and below */
-@media screen and (max-width: 768px) {
-  /* Your CSS rules for screens 768px and below */
-}
-
-/* For 576px and below */
-@media screen and (max-width: 576px) {
-  /* Your CSS rules for screens 576px and below */
-}
-
-/* For 350px and below */
-@media screen and (max-width: 350px) {
-  .container {
-    margin-left: var(--mb-1);
-    margin-right: var(--mb-1);
-  }
+::-webkit-scrollbar-thumb:active {
+  background: var(--m4);
 }

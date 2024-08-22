@@ -8,12 +8,14 @@ const Departments = () => {
         <div className="maincon">
             <div className="depart-topcon">
                 <p className="heading">Departments</p>
-                <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button>
+                <a href="/create-department">
+                    <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button></a>
+
             </div>
 
             <div className="depart-comp">
                 <DepartList />
-                <DepartDeets/>
+                <DepartDeets />
             </div>
         </div>
 

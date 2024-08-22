@@ -7,7 +7,9 @@ const Projects = () => {
         <div className="maincon">
             <div className="projects-topcon">
                 <p className="heading">Projects</p>
-                <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button>
+                <a href="/create-project">
+                    <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button></a>
+
             </div>
 
             <div className="project-cards">

@@ -6,11 +6,14 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Signup from './pages/onboarding/Signup';
 import Login from './pages/onboarding/Login';
 import Projects from './pages/projects/Projects';
-import ProjectDetails from './pages/projectdetails/ProjectDetails';
+import ProjectDetails from './pages/projects/projectdetails/ProjectDetails';
 import Departments from './pages/departments/Departments';
 import Events from './pages/events/Events';
-import NewProject from './pages/newproject/NewProject';
-import NewDepart from './pages/newdepart/NewDepart';
+import NewProject from './pages/projects/newproject/NewProject';
+import NewDepart from './pages/departments/newdepart/NewDepart';
+import Discussions from './pages/discussions/Discussions';
+import ShareData from './pages/sharedata/ShareData';
+import Notifications from './pages/notifications/Notifications';
 
 const AppRoutes = () => {
     return (
@@ -39,6 +42,9 @@ const AppLayout = () => {
                     <Route path="/departments" element={<Departments />} />
                     <Route path="/create-department" element={<NewDepart />} />
                     <Route path="/events" element={<Events />} />
+                    <Route path="/discussions" element={<Discussions />} />
+                    <Route path="/share-data" element={<ShareData />} />
+                    <Route path="/notifications" element={<Notifications />} />
                 </Routes>
             </main>
         </>
@@ -46,4 +52,3 @@ const AppLayout = () => {
 };
 
 export default AppRoutes;
-    

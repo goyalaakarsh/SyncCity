@@ -1,7 +1,7 @@
 import React from 'react'
 import './ProjectDetails.css'
-import ProjDeets from '../../components/project/projdeets/ProjDeets'
-import ProjTasks from '../../components/project/projtasks/ProjTasks'
+import ProjDeets from '../../../components/project/projdeets/ProjDeets'
+import ProjTasks from '../../../components/project/projtasks/ProjTasks'
 
 const ProjectDetails = () => {
   return (
