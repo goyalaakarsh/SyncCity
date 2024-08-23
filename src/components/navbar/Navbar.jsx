@@ -1,39 +1,80 @@
-import React from 'react'
-import Logo from '../../assets/logo.png'
-import './Navbar.css'
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import Logo from '../../assets/logo.png';
+import './Navbar.css';
 
 const Navbar = () => {
     return (
         <div className="navbar">
-            <a href="/">
+            <NavLink to="/" exact>
                 <div className="logo">
-                    <img src={Logo} alt="" />
+                    <img src={Logo} alt="Logo" />
                 </div>
-            </a>
+            </NavLink>
 
             <div className="navbar_links">
-                <a className='navbar_link' href="/dashboard">Dashboard</a>
-                <a className='navbar_link' href="/projects">Projects</a>
-                <a className='navbar_link' href="/discussions">Discussions</a>
-                <a className='navbar_link' href="/events">Events</a>
-                <a className='navbar_link' href="/departments">Departments</a>
-                <a className='navbar_link' href="/share-data">Share Data</a>
+                <NavLink
+                    className="navbar_link"
+                    to="/dashboard"
+                    activeClassName="active"
+                    exact
+                >
+                    Dashboard
+                </NavLink>
+                <NavLink
+                    className="navbar_link"
+                    to="/projects"
+                    activeClassName="active"
+                >
+                    Projects
+                </NavLink>
+                <NavLink
+                    className="navbar_link"
+                    to="/discussions"
+                    activeClassName="active"
+                >
+                    Discussions
+                </NavLink>
+                <NavLink
+                    className="navbar_link"
+                    to="/events"
+                    activeClassName="active"
+                >
+                    Events
+                </NavLink>
+                <NavLink
+                    className="navbar_link"
+                    to="/departments"
+                    activeClassName="active"
+                >
+                    Departments
+                </NavLink>
+                <NavLink
+                    className="navbar_link"
+                    to="/share-data"
+                    activeClassName="active"
+                >
+                    Share Data
+                </NavLink>
             </div>
 
             <div className="navbar_icons">
-                <a href="/notifications">
+                <NavLink to="/notifications">
                     <div className="bell-icon">
-
                         <i className="fa-solid fa-bell"></i>
-                    </div></a>
+                    </div>
+                </NavLink>
 
-                <a href="/profile">
-                    <img className='profile-img' src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" /></a>
-
-
+                <NavLink to="/profile">
+                    <img
+                        className='profile-img'
+                        src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
+                        alt="Profile"
+                    />
+                </NavLink>
             </div>
         </div>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;
