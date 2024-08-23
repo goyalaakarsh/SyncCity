@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-    username: { 
+    name: { 
         type: String,
         required: true,
-        unique: true,
     }, 
     email: {
         type: String,
@@ -28,13 +27,8 @@ const userSchema = new mongoose.Schema({
     depId: {// mongoid for department
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department',
-        required: true,
-        
-    },
-    isManager: {
-        type: Boolean,
-        required: true,
-        default: false,
+        default: "root",
+        // required: true
     },
     avatar: {
         type: String,
