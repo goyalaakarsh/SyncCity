@@ -49,7 +49,7 @@ const NewProject = () => {
 
     return (
         <div className="maincon">
-            <div className="projects-topcon">
+            <div className="newprojects-topcon">
                 <p className="heading">Create new project</p>
             </div>
 
