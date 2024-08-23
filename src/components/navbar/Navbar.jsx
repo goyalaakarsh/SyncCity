@@ -27,7 +27,10 @@ const Navbar = () => {
                         <i className="fa-solid fa-bell"></i>
                     </div></a>
 
-                <img className='profile-img' src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" />
+                <a href="/profile">
+                    <img className='profile-img' src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="" /></a>
+
+
             </div>
         </div>
     )

@@ -4,10 +4,11 @@ import './Discussions.css'
 const Discussions = () => {
   return (
     <div className="maincon">
-        <div className="discuss-topcon">
+      <div className="discuss-topcon">
         <p className="heading">Discussions</p>
+      </div>
 
-        </div>
+      
     </div>
   )
 }
