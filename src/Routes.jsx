@@ -16,6 +16,7 @@ import Discussions from './pages/discussions/Discussions';
 import ShareData from './pages/sharedata/ShareData';
 import Notifications from './pages/notifications/Notifications';
 import NewEvent from './pages/newevent/NewEvent';
+import Profile from './pages/profile/Profile';
 
 const AppRoutes = () => {
     return (
@@ -50,6 +51,7 @@ const AppLayout = () => {
                     <Route path="/share-data" element={<ShareData />} />
                     <Route path="/notifications" element={<Notifications />} />
                     <Route path="/create-event" element={<NewEvent />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </main>
             {/* {shouldShowFooter && <Footer />}  */}
