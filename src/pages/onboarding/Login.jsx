@@ -19,7 +19,7 @@ const Login = () => {
                     <label>
                         Password
                     </label>
-                    <input type="password" placeholder="Choose a passowrd" />
+                    <input type="password" placeholder="Enter your passowrd" />
                 </div>
 
                 <button className="btn btn-primary">Login</button>

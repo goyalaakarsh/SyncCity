@@ -6,16 +6,18 @@ import EventDeets from '../../components/event/eventdeets/EventDeets'
 const Events = () => {
   return (
     <div className="maincon">
-    <div className="events-topcon">
+      <div className="events-topcon">
         <p className="heading">Events</p>
-        <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button>
-    </div>
+        <a href="/create-event">
+          <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button></a>
 
-    <div className="events-comp">
+      </div>
+
+      <div className="events-comp">
         <EventList />
-        <EventDeets/>
+        <EventDeets />
+      </div>
     </div>
-</div>
   )
 }
 

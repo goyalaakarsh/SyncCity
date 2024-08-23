@@ -31,7 +31,7 @@ const Signup = () => {
                     <label>
                         Password
                     </label>
-                    <input type="password" placeholder="Choose a passowrd" />
+                    <input type="password" placeholder="Create a passowrd" />
                 </div>
 
                 <button className="btn btn-primary">Signup</button>
