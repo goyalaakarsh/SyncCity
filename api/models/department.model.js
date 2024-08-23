@@ -7,7 +7,8 @@ const departmentSchema = new mongoose.Schema({
         unique: true
     },
     adminId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     avatar: {
@@ -16,3 +17,7 @@ const departmentSchema = new mongoose.Schema({
     },
 
 }, {timestamps: true});
+
+const Department = mongoose.model('Department', departmentSchema);
+
+export default Department;

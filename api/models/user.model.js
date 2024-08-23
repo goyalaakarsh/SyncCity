@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { type } from 'os';
 
 const userSchema = new mongoose.Schema({
     username: { 
@@ -21,9 +20,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: 2
     },
+    projectId: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Project'}
+    ],
     depId: {// mongoid for department
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department',
         required: true,
+        
     },
     isManager: {
         type: Boolean,
