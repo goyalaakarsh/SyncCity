@@ -1,0 +1,47 @@
+.discuss-card {
+    width: 30rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.discuss-pfp {
+    /* display: inline-block; */
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+.discuss-name {
+    /* margin-left: 1rem; */
+    font-size: 1.1rem;
+    margin: 0;
+    display: inline-block;
+}
+
+.discusscard-name span {
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+.inputform {
+    display: flex;
+    gap: 1rem;
+    max-height: 4rem;
+    justify-content: center; 
+}
+
+.chat-input {
+    margin: auto;
+    margin-top: 1rem;
+}
+
+.form-control.messageInput {
+    width: 80%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    resize: vertical;
+}

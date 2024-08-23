@@ -1,5 +1,6 @@
-.project-card {
+.project-card.card {
     width: 20rem;
+    cursor: pointer;
 }
 
 .projcard-tags {
