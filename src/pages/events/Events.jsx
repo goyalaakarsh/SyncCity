@@ -9,7 +9,7 @@ const Events = () => {
       <div className="events-topcon">
         <p className="heading">Events</p>
         <a href="/create-event">
-          <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button></a>
+          <button className="mainbtn"><i className="tag-icon fa-solid fa-circle-plus"></i> Create new</button></a>
 
       </div>
 

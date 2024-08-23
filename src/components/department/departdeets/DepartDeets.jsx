@@ -7,7 +7,9 @@ const DepartDeets = () => {
             <div className="departinfo">
                 <img className='departlogo' src="https://media.istockphoto.com/id/866715034/vector/entrepreneurs-and-business-people-conference-in-modern-meeting-room.jpg?s=612x612&w=0&k=20&c=HViAYHb_7ZXDuoWEM113lHzShRMBFShmHw2LbuwhNJA=" alt="" />
                 <h5 className="departname">Name of the Department</h5>
-                <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with Admin</button>
+                <a href="/discussions">
+                    <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with Admin</button></a>
+
 
             </div>
 

@@ -32,7 +32,7 @@
     background-color: var(--m4);
     position: relative;
     overflow-y: auto;
-    max-height: 80%;
+    height: 100%;
 }
 
 .message {
@@ -87,5 +87,6 @@
 }
 
 .discuss-chatcon {
-    /* min-height: 80%; */
+    height: 40rem;
+    /* overflow-y: auto; */
 } 
