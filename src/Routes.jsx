@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
+import Footer from './components/footer/Footer';
 import Home from './pages/home/Home';
 import Dashboard from './pages/dashboard/Dashboard';
 import Signup from './pages/onboarding/Signup';
@@ -25,7 +26,9 @@ const AppRoutes = () => {
 
 const AppLayout = () => {
     const location = useLocation();
-    const shouldShowNavbar = location.pathname !== '/';
+    const isHomePage = location.pathname === '/';
+    const shouldShowNavbar = !isHomePage;
+    const shouldShowFooter = !isHomePage;
 
     return (
         <>
@@ -47,6 +50,7 @@ const AppLayout = () => {
                     <Route path="/notifications" element={<Notifications />} />
                 </Routes>
             </main>
+            {/* {shouldShowFooter && <Footer />}  */}
         </>
     );
 };
