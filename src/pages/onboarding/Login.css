@@ -1,7 +1,11 @@
-.onboardcon {
-    max-width: 40rem;
-    margin: auto;
-    margin-bottom: 2rem;
+.onboardmaincon {
+    min-height: 100vh;
+    display: flex;
+    padding: 2rem 0;
+}
 
+.onboardcon {
+    min-width: 35rem;
+    margin: auto;
 
 }

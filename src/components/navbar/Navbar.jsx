@@ -16,7 +16,7 @@ const Navbar = () => {
                 <NavLink
                     className="navbar_link"
                     to="/dashboard"
-                    activeClassName="active"
+                    activeclassname="active"
                     exact
                 >
                     Dashboard
@@ -24,35 +24,35 @@ const Navbar = () => {
                 <NavLink
                     className="navbar_link"
                     to="/projects"
-                    activeClassName="active"
+                    activeclassname="active"
                 >
                     Projects
                 </NavLink>
                 <NavLink
                     className="navbar_link"
                     to="/discussions"
-                    activeClassName="active"
+                    activeclassname="active"
                 >
                     Discussions
                 </NavLink>
                 <NavLink
                     className="navbar_link"
                     to="/events"
-                    activeClassName="active"
+                    activeclassname="active"
                 >
                     Events
                 </NavLink>
                 <NavLink
                     className="navbar_link"
                     to="/departments"
-                    activeClassName="active"
+                    activeclassname="active"
                 >
                     Departments
                 </NavLink>
                 <NavLink
                     className="navbar_link"
                     to="/share-data"
-                    activeClassName="active"
+                    activeclassname="active"
                 >
                     Share Data
                 </NavLink>

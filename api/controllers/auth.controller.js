@@ -2,6 +2,7 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import Project from '../models/project.model.js';
 
 export const test = (req, res) => {
     res.json({
@@ -24,22 +25,35 @@ export const signup = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
-        const validUser = await User.findOne({email: email});
+        const validUser = await User.findOne({ email: email });
         if (!validUser) return next(errorHandler(404, 'User not found'));
         
         const validPassword = bcryptjs.compareSync(password, validUser.password);
         if (!validPassword) return next(errorHandler(401, 'Wrong Credentials'));
 
-        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
-        const {password: pass, ...rest} = validUser._doc;
+        const payload = {
+            id: validUser._id,
+            name: validUser.name,
+            email: validUser.email,
+            role: validUser.role,
+            avatar: validUser.avatar
+        }
 
-        res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        const { password: pass, ...rest } = validUser._doc;
+
+        // Send role with the response
+        res.cookie('access_token', token, { httpOnly: true }).status(200).json({
+            user: rest,
+            role: validUser.role
+        });
     } catch (error) {
         next(error);
     }
 }
+
 
 export const logout = async (req, res, next) => {
     try {
@@ -51,7 +65,7 @@ export const logout = async (req, res, next) => {
 };
 
 export const google = async (req, res, next) => {
-    console.log("test google");
+    console.log("Google Modal triggered");
     try {
         const user = await User.findOne({email: req.body.email})
 
