@@ -16,8 +16,9 @@ const ProjDeets = () => {
     const handleSaveResources = (requestedResources) => {
         console.log('Requested Resources:', requestedResources);
         setReqResourcesVisible(false);
-        // Handle the saving of requested resources here
     };
+
+    
 
     return (
         <div className="ProjDeets">

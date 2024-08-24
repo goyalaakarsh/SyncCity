@@ -14,16 +14,11 @@ export const getDepartment = async (req, res, next) => {
 
 export const createDepartment = async (req, res, next) => {
     try {
-        console.log(req.user);
+        console.log('User from request:', req.user);  
         
-        console.log(req.user.name);
-        
-        if( req.user.role !== 0){
-            return next(errorHandler(403, "You are not authorized for department creation"))
-        }
-
         const newDepartment = new Department({
             depName: req.body.depName,
+            depDesc: req.body.depDesc,
             adminId: req.user.id,
             avatar: req.body.avatar || undefined
         })
@@ -33,6 +28,7 @@ export const createDepartment = async (req, res, next) => {
         res.status(201).json(savedDeparment);
     
     } catch(error) {
+        console.error('Error in createDepartment:', error);
         next(error);
     }
 
@@ -58,7 +54,6 @@ export const updateDepartment = async (req, res, next) => {
             return next(errorHandler(400, "No update fields provided"));
         }
 
-        // Update the department
         const updatedDepartment = await Department.findByIdAndUpdate(req.params.id, {
             $set: updatedFields
         }, { new: true });

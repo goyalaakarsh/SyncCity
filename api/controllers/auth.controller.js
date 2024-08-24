@@ -43,11 +43,15 @@ export const login = async (req, res, next) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET);
         const { password: pass, ...rest } = validUser._doc;
 
-        // Send role with the response
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json({
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            sameSite: 'lax',  
+            secure: false,  
+        }).status(200).json({
             user: rest,
             role: validUser.role
         });
+
     } catch (error) {
         next(error);
     }

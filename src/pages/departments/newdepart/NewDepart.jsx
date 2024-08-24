@@ -1,34 +1,20 @@
 import React, { useState } from 'react';
 import './NewDepart.css'
+import {Link, useNavigate} from 'react-router-dom';
 
 const NewDepart = () => {
-    const [location, setLocation] = useState('');
-    const [suggestions, setSuggestions] = useState([]);
-    const [selectedLocation, setSelectedLocation] = useState('');
 
-    const handleInputChange = async (e) => {
-        const query = e.target.value;
-        setLocation(query);
-
-        if (query.length < 3) {
-            setSuggestions([]);
-            return;
-        }
-
-        try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&countrycodes=IN&format=json&addressdetails=1`);
-            const data = await response.json();
-            setSuggestions(data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-    const handleSuggestionClick = (suggestion) => {
-        setLocation(suggestion.display_name);
-        setSelectedLocation(suggestion);
-        setSuggestions([]);
-    };
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        depName: '',
+        depDesc: '',
+        adminId: '',
+        avatar: '',
+    });
+  
+    console.log(formData);
 
     function filterFunction() {
         const input = document.getElementById("searchInput");
@@ -46,6 +32,43 @@ const NewDepart = () => {
         }
     }
 
+    const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.id]: e.target.value,
+        })
+      };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          setLoading(true);
+          const res = await fetch('http://localhost:3000/api/department/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type' : 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(formData),
+          });
+      
+          const data = await res.json();
+          console.log(data);
+          
+          if (data.success === false) {
+            setLoading(false);
+            setError(data.message);
+            return;
+          }
+          setLoading(false);
+          setError(null);
+          navigate('/'); //change accordingly
+        } catch (error) {
+          setLoading(false);
+          setError(error.message);
+        }
+      
+      };
 
   return (
     <div className="maincon">
@@ -53,12 +76,12 @@ const NewDepart = () => {
         <p className="heading">Create new department</p>
     </div>
 
-    <form className="new-proj-form">
+    <form onSubmit={handleSubmit} className="new-proj-form">
         <div className="input-component card">
             <label>
                 Name
             </label>
-            <input type="text" placeholder="Enter name of the department" />
+            <input type="text" placeholder="Enter name of the department" id='depName' onChange={handleChange}/>
         </div>
 
         <div className="member-con row ">
@@ -67,7 +90,7 @@ const NewDepart = () => {
             <label>
                 Description
             </label>
-            <textarea placeholder="Enter project description" rows={5} />
+            <textarea placeholder="Enter project description" rows={5} id='depDesc' onChange={handleChange}/>
         </div>
 
 

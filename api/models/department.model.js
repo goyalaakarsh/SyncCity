@@ -6,10 +6,14 @@ const departmentSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    depDesc: {
+        type: String,
+        required: true,
+    },
     adminId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        // required: true,
     },
     avatar: {
         type: String,
