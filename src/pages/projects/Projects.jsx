@@ -8,11 +8,17 @@ const Projects = () => {
             <div className="projects-topcon">
                 <p className="heading">Projects</p>
                 <a href="/create-project">
-                    <button className="mainbtn"><i className="fa-solid fa-circle-plus"></i> Create new</button></a>
+                    <button className="mainbtn"><i className="tag-icon fa-solid fa-circle-plus"></i> Create new</button></a>
 
             </div>
 
             <div className="project-cards">
+                <ProjectCard />
+                <ProjectCard />
+                <ProjectCard />
+                <ProjectCard />
+                <ProjectCard />
+                <ProjectCard />
                 <ProjectCard />
                 <ProjectCard />
             </div>
