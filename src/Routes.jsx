@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import Home from './pages/home/Home';
-import Dashboard from './pages/dashboard/Dashboard';
+import Dashboard from './pages/dashboard/dashboard';
 import Signup from './pages/onboarding/Signup';
 import Login from './pages/onboarding/Login';
 import Projects from './pages/projects/Projects';
@@ -18,6 +18,7 @@ import Notifications from './pages/notifications/Notifications';
 import NewEvent from './pages/newevent/NewEvent';
 import Profile from './pages/profile/Profile';
 import Root from './pages/root/Root';
+import Join from './pages/onboarding/Join';
 
 const AppRoutes = () => {
     return (
@@ -29,9 +30,9 @@ const AppRoutes = () => {
 
 const AppLayout = () => {
     const location = useLocation();
-    const isHomePage = location.pathname === '/';
-    const shouldShowNavbar = !isHomePage;
-    const shouldShowFooter = !isHomePage;
+    const hideNavbarRoutes = ['/', '/signup', '/login', '/root', '/create-department', '/join-department'];
+    const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+    const shouldShowFooter = true; // Adjust this if needed
 
     return (
         <>
@@ -54,9 +55,9 @@ const AppLayout = () => {
                     <Route path="/create-event" element={<NewEvent />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/root" element={<Root />} />
+                    <Route path="/join-department" element={<Join />} />
                 </Routes>
             </main>
-            {/* {shouldShowFooter && <Footer />}  */}
         </>
     );
 };

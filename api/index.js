@@ -30,12 +30,14 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/department", departmentRouter);
+<<<<<<< HEAD
 app.use("/api/project", projectRouter)
+=======
+>>>>>>> 9087b147ad1edfedc16cbc3719588a8527be9af4
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
-    
     console.error(err);
 
     return res.status(statusCode).json({

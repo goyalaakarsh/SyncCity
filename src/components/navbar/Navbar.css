@@ -9,7 +9,7 @@
 }
 
 .logo img{
-    width: 160px;
+    width: 150px;
 }
 
 .navbar_link {
@@ -17,6 +17,7 @@
     text-decoration: none;
     margin: 0 1rem;
     font-family: 'Montserrat', sans-serif;
+    transition: 0.1s;
 }
 
 .active {
@@ -46,4 +47,9 @@
     display: flex;
     border-radius: 50%;
 
+}
+
+.navbar_link:hover {
+    text-decoration: none;
+    color: var(--m1);
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import DepartList from '../../components/department/departlist/DepartList'
 import DepartDeets from '../../components/department/departdeets/DepartDeets'
+import DepartListCard from '../../components/department/departlistcard/DepartListCard'
 
 const Root = () => {
   return (
@@ -13,7 +14,19 @@ const Root = () => {
     </div>
 
     <div className="depart-comp">
-        <DepartList />
+    <div className="departlist">
+
+            <div className="otherdeparts">
+                <h5>All Departments</h5>
+                <DepartListCard />
+                <DepartListCard />
+                <DepartListCard />
+                <DepartListCard />
+                <DepartListCard />
+                <DepartListCard />
+                <DepartListCard />
+            </div>
+        </div>
         <DepartDeets />
     </div>
 </div>

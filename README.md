@@ -1,1 +1,1 @@
-# SyncCity
+# Syncity
