@@ -49,7 +49,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="onboardcon maincon">
+
+    <div className="onboardmaincon">
+       <div className="onboardcon maincon">
         <div className="projects-topcon">
             <p className="heading">Signup</p>
         </div>
@@ -95,6 +97,8 @@ const Signup = () => {
         <p className="login-text">Already have an account? <Link to={'/login'}><span className='text-blue-700'> Login </span> </Link> </p>
         
     </div>
+    </div>
+   
 
   )
 }

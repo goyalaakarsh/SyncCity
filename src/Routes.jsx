@@ -29,9 +29,9 @@ const AppRoutes = () => {
 
 const AppLayout = () => {
     const location = useLocation();
-    const isHomePage = location.pathname === '/';
-    const shouldShowNavbar = !isHomePage;
-    const shouldShowFooter = !isHomePage;
+    const hideNavbarRoutes = ['/', '/signup', '/login', '/root'];
+    const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
+    const shouldShowFooter = true; // Adjust this if needed
 
     return (
         <>
@@ -56,7 +56,6 @@ const AppLayout = () => {
                     <Route path="/root" element={<Root />} />
                 </Routes>
             </main>
-            {/* {shouldShowFooter && <Footer />}  */}
         </>
     );
 };

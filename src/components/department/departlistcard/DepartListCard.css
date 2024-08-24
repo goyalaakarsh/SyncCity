@@ -1,5 +1,6 @@
-.departlistcard {
+.departlistcard.card {
     margin: 1rem 0;
+    cursor: pointer;
 }
 
 .departcard-tags {

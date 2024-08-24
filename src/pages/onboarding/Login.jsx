@@ -42,7 +42,8 @@ const Login = () => {
     };
     
     return (
-        <div className="onboardcon maincon">
+      <div className='onboardmaincon'>
+                <div className="onboardcon maincon">
             <div className="projects-topcon">
                 <p className="heading">Login</p>
             </div>
@@ -77,6 +78,7 @@ const Login = () => {
             </form>
 
         </div>
+      </div>
     )
 }
 
