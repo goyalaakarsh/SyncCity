@@ -62,7 +62,7 @@ const NewDepart = () => {
           }
           setLoading(false);
           setError(null);
-          navigate('/'); //change accordingly
+          navigate('/root'); //change accordingly
         } catch (error) {
           setLoading(false);
           setError(error.message);
