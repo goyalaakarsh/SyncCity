@@ -6,6 +6,7 @@ import userRouter from './routes/user.route.js';
 import departmentRouter from './routes/department.route.js'; 
 import projectRouter from './routes/project.route.js';
 import cookieParser from 'cookie-parser';
+import summarizerRoutes from './routes/summarizer.route.js';
 import cors from 'cors';  
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/department", departmentRouter);
 app.use("/api/project", projectRouter);
+app.use('/api/summarize', summarizerRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
