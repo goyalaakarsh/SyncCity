@@ -2,7 +2,6 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
-import Project from '../models/project.model.js';
 
 export const test = (req, res) => {
     res.json({
@@ -11,9 +10,9 @@ export const test = (req, res) => {
 };
 
 export const signup = async (req, res, next) => {
-    const {name, email, password, role, depId} = req.body;
+    const {name, email, password, role, projectId, depId} = req.body;
     const hashedPassword = bcryptjs.hashSync(password, 10); 
-    const newUser = new User({name, email, password: hashedPassword, role, depId});
+    const newUser = new User({name, email, password: hashedPassword, role, projectId, depId});
     
     try {
         await newUser.save();
