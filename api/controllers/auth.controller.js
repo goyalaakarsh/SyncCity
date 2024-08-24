@@ -2,6 +2,7 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import Project from '../models/project.model.js';
 
 export const test = (req, res) => {
     res.json({
@@ -32,7 +33,15 @@ export const login = async (req, res, next) => {
         const validPassword = bcryptjs.compareSync(password, validUser.password);
         if (!validPassword) return next(errorHandler(401, 'Wrong Credentials'));
 
-        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
+        const payload = {
+            id: validUser._id,
+            name: validUser.name,
+            email: validUser.email,
+            role: validUser.role,
+            avatar: validUser.avatar
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
         const {password: pass, ...rest} = validUser._doc;
 
         res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);

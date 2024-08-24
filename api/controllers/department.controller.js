@@ -14,6 +14,10 @@ export const getDepartment = async (req, res, next) => {
 
 export const createDepartment = async (req, res, next) => {
     try {
+        console.log(req.user);
+        
+        console.log(req.user.name);
+        
         if( req.user.role !== 0){
             return next(errorHandler(403, "You are not authorized for department creation"))
         }
