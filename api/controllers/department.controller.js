@@ -93,9 +93,3 @@ export const deleteDepartment = async (req, res, next) => {
     }
 
 }
-
-
-
-
-
-
