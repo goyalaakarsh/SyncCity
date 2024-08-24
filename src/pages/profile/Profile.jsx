@@ -1,4 +1,5 @@
 import React from 'react'
+import './Profile.css'
 
 const Profile = () => {
   return (
@@ -14,9 +15,9 @@ const Profile = () => {
           <h5 className="departname">Name</h5>
           <button className="discussbtn mainbtn"><i className="fa-solid fa-envelope"></i>example@syncity.com</button>
 
-          <div className="row">
-          <button className="btn btn-primary col"> Edit</button>
-          <button className="btn btn-danger col"> Log out</button>
+          <div className="prof-actions ">
+            <button className="btn btn-primary "> Edit</button>
+            <button className="btn btn-danger "> Log out</button>
           </div>
 
 

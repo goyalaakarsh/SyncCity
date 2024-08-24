@@ -53,18 +53,18 @@ const NewProject = () => {
                 <p className="heading">Create new project</p>
             </div>
 
-            <form className="new-proj-form">
+            <form className="new-proj-form" noValidate>
                 <div className="input-component card">
                     <label>
                         Title
                     </label>
-                    <input type="text" placeholder="Enter project name" />
+                    <input type="text" placeholder="Enter project name" required />
                 </div>
                 <div className="input-component card">
                     <label>
                         Description
                     </label>
-                    <textarea placeholder="Enter project description" rows={5} />
+                    <textarea placeholder="Enter project description" rows={5} required/>
                 </div>
 
                 <div className="loc-date-con row">
@@ -77,6 +77,7 @@ const NewProject = () => {
                             placeholder="Enter location"
                             value={location}
                             onChange={handleInputChange}
+                            required
                         />
                         {suggestions.length > 0 && (
                             <div className="autocomplete-suggestions">
@@ -104,6 +105,7 @@ const NewProject = () => {
                                     id="start-date"
                                     name="start-date"
                                     placeholder="Start Date"
+                                    required
                                 />
                             </div>
 
@@ -116,6 +118,7 @@ const NewProject = () => {
                                     id="end-date"
                                     name="end-date"
                                     placeholder="End Date"
+                                    required
                                 />
                             </div>
                         </div>
@@ -128,11 +131,11 @@ const NewProject = () => {
                             Select a Project Manager
                         </label>
 
-                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} />
+                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
 
                         <div id="dropdownMenu" className="manager-drop card dropdown-content">
                             <div className="manager-drop-item" htmlFor="member1">
-                                <input type="radio" id="member1" name="projectManager" className="member-checkbox" />
+                                <input type="radio" id="member1" name="projectManager" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
@@ -140,21 +143,21 @@ const NewProject = () => {
                             </div>
 
                             <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
                                 <span htmlFor="member2">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">aaaiya Sharma</span>
                                 </span>
                             </div>
                             <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
                                 <span htmlFor="member2">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">aaaiya Sharma</span>
                                 </span>
                             </div>
                             <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
                                 <span htmlFor="member2">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">aaaiya Sharma</span>
@@ -171,46 +174,46 @@ const NewProject = () => {
                             Add members to this Project
                         </label>
 
-                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} />
+                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
 
                         <div id="dropdownMenu" className="member-drop card dropdown-content">
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
                                 </span>
                             </div>
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
                                 </span>
                             </div>
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
                                 </span>
                             </div>
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
                                 </span>
                             </div>
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
                                 </span>
                             </div>
                             <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" />
+                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
                                 <span htmlFor="member1">
                                     <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
                                     <span className="user-name">Priya Sharma</span>
