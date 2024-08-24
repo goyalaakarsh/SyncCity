@@ -82,7 +82,7 @@ const Signup = () => {
                 <input type="password" placeholder="Create a passowrd" id='password' onChange={handleChange}/>
             </div>
 
-            <button disabled={loading} className="btn btn-primary"> {loading ? 'Loading...' : 'Sign-Up'} </button>
+            <button disabled={loading} className="btn btn-primary"> {loading ? 'Loading...' : 'Sign Up'} </button>
         </form>
 
         <div className="using-google">

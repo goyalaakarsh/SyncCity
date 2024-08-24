@@ -23,23 +23,29 @@ const Login = () => {
         const res = await fetch('http://localhost:3000/api/auth/login', {
           method: 'POST',
           headers: {
-            'Content-Type' : 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
         });
     
         const data = await res.json();
         console.log(data);
-        
+    
         if (data.success === false) {
+          console.error('Login failed:', data.message);
           return;
         }
-        navigate('/dashboard');
+    
+        if (data.role === 0) {
+          navigate('/root');
+        } else {
+          navigate('/dashboard');
+        }
       } catch (error) {
-        dispatch(signInFailure(error.message));
+        console.error('Login error:', error);
       }
-  
     };
+    
     
     return (
       <div className='onboardmaincon'>

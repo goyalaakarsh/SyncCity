@@ -25,9 +25,9 @@ export const signup = async (req, res, next) => {
 };
 
 export const login = async (req, res, next) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
-        const validUser = await User.findOne({email: email});
+        const validUser = await User.findOne({ email: email });
         if (!validUser) return next(errorHandler(404, 'User not found'));
         
         const validPassword = bcryptjs.compareSync(password, validUser.password);
@@ -42,13 +42,18 @@ export const login = async (req, res, next) => {
         }
 
         const token = jwt.sign(payload, process.env.JWT_SECRET);
-        const {password: pass, ...rest} = validUser._doc;
+        const { password: pass, ...rest } = validUser._doc;
 
-        res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
+        // Send role with the response
+        res.cookie('access_token', token, { httpOnly: true }).status(200).json({
+            user: rest,
+            role: validUser.role
+        });
     } catch (error) {
         next(error);
     }
 }
+
 
 export const logout = async (req, res, next) => {
     try {
@@ -60,7 +65,7 @@ export const logout = async (req, res, next) => {
 };
 
 export const google = async (req, res, next) => {
-    console.log("test google");
+    console.log("Google Modal triggered");
     try {
         const user = await User.findOne({email: req.body.email})
 
