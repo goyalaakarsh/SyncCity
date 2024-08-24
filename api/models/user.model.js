@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
     projectId: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Project'}
+            ref: 'Project'
+        }
     ],
     depId: {// mongoid for department
         type: mongoose.Schema.Types.ObjectId,

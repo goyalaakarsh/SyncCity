@@ -2,7 +2,6 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
-import Project from '../models/project.model.js';
 
 export const test = (req, res) => {
     res.json({
@@ -11,9 +10,9 @@ export const test = (req, res) => {
 };
 
 export const signup = async (req, res, next) => {
-    const {name, email, password, role, depId} = req.body;
+    const {name, email, password, role, projectId, depId} = req.body;
     const hashedPassword = bcryptjs.hashSync(password, 10); 
-    const newUser = new User({name, email, password: hashedPassword, role, depId});
+    const newUser = new User({name, email, password: hashedPassword, role, projectId, depId});
     
     try {
         await newUser.save();
@@ -44,11 +43,15 @@ export const login = async (req, res, next) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET);
         const { password: pass, ...rest } = validUser._doc;
 
-        // Send role with the response
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json({
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            sameSite: 'lax',  
+            secure: false,  
+        }).status(200).json({
             user: rest,
             role: validUser.role
         });
+
     } catch (error) {
         next(error);
     }
