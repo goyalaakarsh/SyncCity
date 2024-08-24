@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     depId: {// mongoid for department
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department',
-        default: "root",
+        // default: "root",
         // required: true
     },
     avatar: {
