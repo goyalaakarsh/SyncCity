@@ -1,15 +1,9 @@
-
 import express from 'express';
+import { summarizeProject } from '../controllers/summarizer.controller.js';
+import { verifyToken } from '../utils/verifyUser.js';
+
 const router = express.Router();
 
-router.post('/', (req, res) => {
-    // Simulate processing and response
-    const projectDetails = req.body.projectDetails;
-
-    // Dummy response for demonstration
-    const summary = `Summary for: ${projectDetails}`;
-
-    res.json({ summary });
-});
+router.post('/summarize', summarizeProject);
 
 export default router;

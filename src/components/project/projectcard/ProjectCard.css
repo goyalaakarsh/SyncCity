@@ -62,3 +62,7 @@
     align-items: flex-start;
     gap: 0.5rem;
 }
+
+.project-card-link:hover {
+    text-decoration: none;
+}

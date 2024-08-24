@@ -9,8 +9,6 @@ const DepartDeets = () => {
                 <h5 className="departname">Name of the Department</h5>
                 <a href="/discussions">
                     <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with Admin</button></a>
-
-
             </div>
 
             <div className="departstats">

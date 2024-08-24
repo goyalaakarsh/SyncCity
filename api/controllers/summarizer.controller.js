@@ -1,25 +1,30 @@
-// import { exec } from 'child_process';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// // Handle the POST request for summarization
-// export const summarizeProject = (req, res) => {
-//     const projectDetails = req.body.projectDetails;
+// const genAI = new GoogleGenerativeAI("AIzaSyAhvV0E6B84j39A6S6_XTl426AnVFEiQnU");
+const genAI = new GoogleGenerativeAI("AIzaSyB1_MJBhlk5m6jiNysEAVOZ_15lMReO_d4");
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-//     // Escape special characters to prevent shell injection
-//     const escapedProjectDetails = projectDetails.replace(/"/g, '\\"');
+export const summarizeProject = async (req, res) => {
+    console.log("Received request to summarize project");
 
-//     // Execute the Python script
-//     exec(`python3 summarize.py "${escapedProjectDetails}"`, (error, stdout, stderr) => {
-//         if (error) {
-//             console.error(`Error executing Python script: ${error}`);
-//             return res.status(500).json({ error: 'An error occurred while generating the summary.' });
-//         }
+    const projectDetails = req.body.projectDetails;
+    console.log("Project Details:", projectDetails);
 
-//         if (stderr) {
-//             console.error(`Python script stderr: ${stderr}`);
-//             return res.status(500).json({ error: 'An error occurred while generating the summary.' });
-//         }
+    try {
+        console.log("Sending request to API...");
 
-//         // Send the summary back to the client
-//         res.json({ summary: stdout.trim() });
-//     });
-// };
+        const result = await model.generateContent(`Summarize the following project details in 2-3 lines: ${projectDetails}`);
+        const response = await result.response;
+        const summary = await response.text();
+
+        console.log("API Response:", summary);
+
+        res.json({ summary });
+    } catch (error) {
+        console.error(`Error making API request: ${error.message}`);
+        if (error.response) {
+            console.error('API Response Error:', error.response.data);
+        }
+        res.status(500).json({ error: 'An error occurred while generating the summary.' });
+    }
+};
