@@ -15,8 +15,7 @@ const DepartDeets = ({ department }) => {
                 <img className='departlogo' src={avatar} alt="Department Avatar" />
                 <h5 className="departname">{depName}</h5>
                 <a href="/discussions">
-                    <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i> Discuss with Admin</button>
-                </a>
+                    <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with Admin</button></a>
             </div>
 
             <div className="departstats">
