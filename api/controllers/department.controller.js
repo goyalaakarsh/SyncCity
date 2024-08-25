@@ -47,7 +47,7 @@ export const updateDepartment = async (req, res, next) => {
 
     try {
 
-        if( req.user.role !== 0){
+        if( req.user.role !== 0){ //can remove, not required due to front end based restrictions
             return next(errorHandler(403, "You are not authorized to update department"))
         }
 
@@ -57,6 +57,7 @@ export const updateDepartment = async (req, res, next) => {
 
         const updatedFields = {};
         if (req.body.depName) updatedFields.depName = req.body.depName;
+        if (req.body.depDesc) updatedFields.depDesc = req.body.depDesc;
         if (req.body.avatar) updatedFields.avatar = req.body.avatar;
 
         if(Object.keys(updatedFields).length === 0){
@@ -85,6 +86,8 @@ export const deleteDepartment = async (req, res, next) => {
         }
 
         const department = await Department.findById(req.params.id);
+        console.log(department);
+
         if(!department) return next(errorHandler(404, "Department not found"));
         const dName = department.depName;
 

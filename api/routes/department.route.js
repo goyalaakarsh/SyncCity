@@ -8,6 +8,6 @@ router.get('/:id', getDepartment);
 router.get('/', getDepartments);
 router.post('/create', verifyToken, createDepartment);
 router.post('/update/:id', verifyToken, updateDepartment);
-router.post('/delete/:id', verifyToken, deleteDepartment);
+router.delete('/delete/:id', verifyToken, deleteDepartment);
 
 export default router;
