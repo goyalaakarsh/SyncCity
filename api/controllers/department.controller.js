@@ -12,6 +12,15 @@ export const getDepartment = async (req, res, next) => {
     }
 }
 
+export const getDepartments = async (req, res, next) => {
+    try { //get multiple departments
+        const departments = await Department.find();
+        res.status(200).json(departments);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const createDepartment = async (req, res, next) => {
     try {
         console.log('User from request:', req.user);  
