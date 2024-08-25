@@ -5,7 +5,7 @@ import DepartDeets from '../../components/department/departdeets/DepartDeets'
 
 const Departments = () => {
     return (
-        <div className="maincon">
+        <div className="maincon ">
             <div className="depart-topcon">
                 <p className="heading">Departments</p>
 

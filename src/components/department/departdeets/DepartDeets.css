@@ -1,3 +1,10 @@
+.departdeets {
+    max-height: 50rem;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+
+}
+
 .departinfo {
     display: flex;
     flex-direction: column;
@@ -5,9 +12,10 @@
     margin: auto;
     justify-content: center;
     align-items: center;
+    min-width: 100%;
 }
 
-.departlogo{
+.departlogo {
     width: 15rem;
     height: 15rem;
     border-radius: 50%;
@@ -55,4 +63,14 @@
 
 .depart-desc h5 {
     margin-bottom: 1rem;
+}
+
+.departbtncon {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+a:hover {
+    text-decoration: none;
 }
