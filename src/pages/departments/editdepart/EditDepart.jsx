@@ -73,7 +73,7 @@ const EditDepart = () => {
   return (
     <div className="maincon">
     <div className="projects-topcon">
-        <p className="heading">Create new department</p>
+        <p className="heading">Edit Department</p>
     </div>
 
     <form onSubmit={handleSubmit} className="new-proj-form">
