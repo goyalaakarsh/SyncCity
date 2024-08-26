@@ -7,7 +7,7 @@ import departmentRouter from './routes/department.route.js';
 import projectRouter from './routes/project.route.js';
 import cookieParser from 'cookie-parser';
 import summarizerRouter from './routes/summarizer.route.js';
-import cors from 'cors';  
+import cors from 'cors';
 
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(() => {
@@ -18,6 +18,9 @@ mongoose.connect(process.env.MONGO).then(() => {
 )
 
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
 
 app.use(cors({
     origin: ' http://localhost:5173',  // Replace with your frontend's URL
@@ -25,8 +28,6 @@ app.use(cors({
     credentials: true,  // Allow cookies or authentication to be passed along
 }));
 
-app.use(express.json());
-app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);

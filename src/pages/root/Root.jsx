@@ -6,22 +6,32 @@ const Root = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
-  useEffect(() => {
-    // Fetch departments from the API
-    const fetchDepartments = async () => {
-      try {
-        const res = await fetch('http://localhost:3000/api/department'); // Adjust API endpoint
-        const data = await res.json();
-        
-        const filteredDepartments = data.filter(department => department.depName !== 'Root');
-        setDepartments(filteredDepartments);
-      } catch (error) {
-        console.error('Error fetching departments:', error);
-      }
-    };
+  // Function to fetch departments
+  const fetchDepartments = async () => {
+    try {
+      const res = await fetch('http://localhost:3000/api/department');
+      const data = await res.json();
+      setDepartments(data.filter(department => department.depName !== 'Root')); // Filter out 'Root'
+    } catch (error) {
+      console.error('Error fetching departments:', error);
+    }
+  };
 
+    // Initial fetch when component mounts  
+  useEffect(() => {
     fetchDepartments();
   }, []);
+
+  // Function to handle department deletion
+  const handleDeleteDepartment = async (deletedId) => {
+    try {
+      // Optionally, trigger a re-fetch of departments after deletion
+      await fetchDepartments();
+      setSelectedDepartment(null); // Clear the details view after deletion
+    } catch (error) {
+      console.error('Error updating departments after deletion:', error);
+    }
+  };
 
   return (
     <div className="maincon">
@@ -45,7 +55,12 @@ const Root = () => {
             ))}
           </div>
         </div>
-        {selectedDepartment && <DepartDeets department={selectedDepartment} />}
+        {selectedDepartment && (
+          <DepartDeets
+            department={selectedDepartment}
+            onDelete={handleDeleteDepartment}
+          />
+        )}
       </div>
     </div>
   );
