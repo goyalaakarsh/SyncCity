@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './ProjDeets.css'
 import ReqResources from '../reqresources/ReqResources'
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import MapComponent from '../../maps/Maps';
 
 const ProjDeets = () => {
     const [isReqResourcesVisible, setReqResourcesVisible] = useState(false);
@@ -152,6 +155,9 @@ const ProjDeets = () => {
 
                 </span>
             </div>
+            
+
+            <MapComponent />
 
             <ReqResources
                 isVisible={isReqResourcesVisible}
