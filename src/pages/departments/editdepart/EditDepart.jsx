@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './NewDepart.css'
 import {Link, useNavigate} from 'react-router-dom';
 
-const NewDepart = () => {
+const EditDepart = () => {
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ const NewDepart = () => {
         e.preventDefault();
         try {
           setLoading(true);
-          const res = await fetch('http://localhost:3000/api/department/create', {
+          const res = await fetch('http://localhost:3000/api/department/edit', {
             method: 'POST',
             headers: {
               'Content-Type' : 'application/json',
@@ -139,10 +139,10 @@ const NewDepart = () => {
 
         </div>
 
-        <button className="creatproj btn btn-primary">Create</button>
+        <button className="creatproj btn btn-primary">Edit</button>
     </form>
 </div>
   )
 }
 
-export default NewDepart
+export default EditDepart
