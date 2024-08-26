@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './DepartDeets.css';
 
 const DepartDeets = ({ department, onDelete }) => {
+    const navigate = useNavigate();
     const depName = department?.depName || 'Name not available.';
     const depDesc = department?.depDesc || 'Description not available.';
     const adminName = department?.adminId?.name || 'Unknown Admin'; // Placeholder admin name
@@ -35,6 +37,10 @@ const DepartDeets = ({ department, onDelete }) => {
         }
     };
 
+     const handleEdit = () => {
+        navigate(`/departments/update/${department._id}`);
+    };
+
     return (
         <div className="departdeets">
             <div className="departinfo">
@@ -43,7 +49,7 @@ const DepartDeets = ({ department, onDelete }) => {
                 <a className='departbtncon' href="/discussions">
                     <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with Admin</button>
                 </a>
-                <button className="discussbtn mainbtn"><i className="fa-solid fa-pen-to-square"></i>Edit</button>
+                <button className="discussbtn mainbtn" onClick={handleEdit}><i className="fa-solid fa-pen-to-square"></i>Edit</button>
                 <button className="discussbtn mainbtn" onClick={handleDelete}><i className="fa-solid fa-trash"></i>Delete</button>
             </div>
 

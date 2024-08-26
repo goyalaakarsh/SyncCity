@@ -9,6 +9,11 @@ import cookieParser from 'cookie-parser';
 import summarizerRouter from './routes/summarizer.route.js';
 import cors from 'cors';
 
+// import ReactDOM from 'react-dom';
+// import AppRoutes from './Routes'
+
+
+
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(() => {
         console.log("Connected to MongoDB!");

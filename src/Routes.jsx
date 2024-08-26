@@ -19,6 +19,10 @@ import NewEvent from './pages/newevent/NewEvent';
 import Profile from './pages/profile/Profile';
 import Root from './pages/root/Root';
 import Join from './pages/onboarding/Join';
+import DepartDeets from './components/department/departdeets/DepartDeets';
+import EditDepart from './pages/departments/editdepart/EditDepart';
+
+
 
 const AppRoutes = () => {
     return (
@@ -56,6 +60,9 @@ const AppLayout = () => {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/root" element={<Root />} />
                     <Route path="/join-department" element={<Join />} />
+
+                    <Route path="/departments/update/:id" element={<EditDepart />} />
+                    <Route path="/departments/:id" element={<DepartDeets />} />
                 </Routes>
             </main>
         </>

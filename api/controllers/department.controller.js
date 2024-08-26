@@ -81,9 +81,10 @@ export const deleteDepartment = async (req, res, next) => {
     console.log('Cookies:', req.cookies); // Log all cookies
     try {
 
-        // if( req.user.role !== 0){
-        //     return next(errorHandler(403, "You are not authorized to delete department"))
-        // }
+        if( req.user.role !== 0){
+            return next(errorHandler(403, "You are not authorized to delete department"))
+        }
+
         const department = await Department.findById(req.params.id);
         console.log(department);
 
