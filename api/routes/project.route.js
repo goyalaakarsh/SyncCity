@@ -10,6 +10,7 @@ router.post('/update/:id', verifyToken, updateProject) // update project fields 
 router.post('/delete/:id', verifyToken, deleteProject); // delete a project
 
 router.get('/:id/members', getProjectMembers) // get project members
+// router.get('/:id/tasks', getProjectTasks);
 
 
 
