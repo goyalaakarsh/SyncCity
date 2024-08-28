@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import './NewDepart.css'
-import {Link, useNavigate} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import '../newdepart/NewDepart.css';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 
-const NewDepart = () => {
+const EditDepart = () => {
+
+    const { id } = useParams(); // Extract department ID from URL
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -32,48 +34,91 @@ const NewDepart = () => {
         }
     }
 
+    useEffect(() => {
+        // Fetch the existing department data when the component mounts
+        const fetchDepartment = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/department/${id}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to fetch department');
+                }
+                setFormData({
+                    depName: data.depName,
+                    depDesc: data.depDesc,
+                    adminId: data.adminId,
+                    avatar: data.avatar,
+                });
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
+        fetchDepartment();
+    }, [id]);
+
     const handleChange = (e) => {
         setFormData({
           ...formData,
           [e.target.id]: e.target.value,
         })
-      };
+    };
+
+    const handleAdminChange = (e) => {
+        setFormData({
+            ...formData,
+            adminId: e.target.value, // Update adminId based on selection
+        });
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          setLoading(true);
-          const res = await fetch('http://localhost:3000/api/department/create', {
-            method: 'POST',
-            headers: {
-              'Content-Type' : 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(formData),
-          });
-      
-          const data = await res.json();
-          console.log(data);
-          
-          if (data.success === false) {
+            setLoading(true);
+            const res = await fetch(`http://localhost:3000/api/department/update/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+            console.log(data);
+            
+            if (data.success === false) {
+                setLoading(false);
+                setError(data.message);
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to update department');
+            }
+
             setLoading(false);
-            setError(data.message);
-            return;
-          }
-          setLoading(false);
-          setError(null);
-          navigate('/root'); //change accordingly
+            setError(null);
+            // navigate(`/departments/${id}`); //go to the edited dep page, does make sense since root doesnt care
+            navigate('/root'); //go back to root page
         } catch (error) {
-          setLoading(false);
-          setError(error.message);
+            setLoading(false);
+            setError(error.message);
         }
-      
-      };
+    };
 
   return (
     <div className="maincon">
     <div className="projects-topcon">
-        <p className="heading">Create new department</p>
+        <p className="heading">Edit Department</p>
     </div>
 
     <form onSubmit={handleSubmit} className="new-proj-form">
@@ -81,7 +126,7 @@ const NewDepart = () => {
             <label>
                 Name
             </label>
-            <input type="text" placeholder="Enter name of the department" id='depName' onChange={handleChange}/>
+            <input type="text" placeholder="Enter name of the department" id='depName' value={formData.depName} onChange={handleChange}/>
         </div>
 
         <div className="member-con row ">
@@ -90,7 +135,7 @@ const NewDepart = () => {
             <label>
                 Description
             </label>
-            <textarea placeholder="Enter project description" rows={5} id='depDesc' onChange={handleChange}/>
+            <textarea placeholder="Enter project description" rows={5} id='depDesc' value={formData.depDesc} onChange={handleChange}/>
         </div>
 
 
@@ -139,10 +184,15 @@ const NewDepart = () => {
 
         </div>
 
-        <button className="creatproj btn btn-primary">Create</button>
+        <button className="creatproj btn btn-primary" disabled={loading}>
+            {loading ? 'Updating...' : 'Edit'}
+        </button>
+
+        {error && <p className="error">{error}</p>}
+
     </form>
 </div>
   )
-}
+};
 
-export default NewDepart
+export default EditDepart

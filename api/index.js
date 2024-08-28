@@ -7,7 +7,13 @@ import departmentRouter from './routes/department.route.js';
 import projectRouter from './routes/project.route.js';
 import taskRouter from './routes/task.route.js';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';  
+import summarizerRouter from './routes/summarizer.route.js';
+import cors from 'cors';
+
+// import ReactDOM from 'react-dom';
+// import AppRoutes from './Routes'
+
+
 
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(() => {
@@ -18,6 +24,9 @@ mongoose.connect(process.env.MONGO).then(() => {
 )
 
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
 
 app.use(cors({
     origin: ' http://localhost:5173',  // Replace with your frontend's URL
@@ -25,14 +34,13 @@ app.use(cors({
     credentials: true,  // Allow cookies or authentication to be passed along
 }));
 
-app.use(express.json());
-app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/department", departmentRouter);
 app.use("/api/project", projectRouter);
 app.use("/api/task", taskRouter);
+app.use('/api/aiml', summarizerRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

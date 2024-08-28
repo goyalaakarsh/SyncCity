@@ -1,4 +1,6 @@
 .depart-comp {
     display: flex;
     gap: 4rem;
+    max-height: 50rem;
 }
+

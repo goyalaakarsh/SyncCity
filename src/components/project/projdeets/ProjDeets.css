@@ -70,8 +70,13 @@
 
 .proj-desc {
     margin-top: 2rem;
+    text-align: justify;
 }
 
 .proj-desc h5 {
     margin-bottom: 1rem;
+}
+
+.proj-summary {
+    margin-top: 1rem;
 }

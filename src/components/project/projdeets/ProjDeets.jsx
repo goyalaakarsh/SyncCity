@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import './ProjDeets.css'
 import ReqResources from '../reqresources/ReqResources'
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import MapComponent from '../../maps/Maps';
 
 const ProjDeets = () => {
     const [isReqResourcesVisible, setReqResourcesVisible] = useState(false);
+    const [summary, setSummary] = useState(''); // State for storing the summary
+    const [loading, setLoading] = useState(false); // State for loading indicator
+    const [error, setError] = useState(''); // State for error handling
+
 
     const handleReqResourcesOpen = () => {
         setReqResourcesVisible(true);
@@ -18,12 +25,65 @@ const ProjDeets = () => {
         setReqResourcesVisible(false);
     };
 
+    const handleSummarize = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            console.log("Making request to summarize API");
+    
+            const response = await fetch('http://localhost:3000/api/aiml/summarize', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    projectDetails: `Revamping Public Transportation System in Metropolitan Area
+                        Name: Revamping Public Transportation System in Metropolitan Area
+                        Description: Implementation of an AI-powered traffic control system to reduce congestion and improve traffic flow across the city. This project aims to install smart traffic lights, sensors, and cameras at major intersections, which will adapt based on real-time traffic data to minimize delays and ensure smooth traffic flow.
+                        Location: Central Business District, Hyderabad
+                        Participating Departments:
+                        Hyderabad Traffic Police
+                        Municipal Corporation of Hyderabad
+                        Department of Urban Planning
+                        IT Department of Telangana
+                        Project Manager: Rajesh Kumar (Traffic Police)
+                        Other Involved Members:
+                        Anjali Verma (Urban Planning)
+                        Suresh Reddy (Municipal Corporation)
+                        Kavita Sharma (IT Department)
+                    `
+                }), 
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Response Data:", data);
+    
+            setSummary(data.summary);
+        } catch (error) {
+            console.error('Error:', error);
+            setError('An error occurred while fetching the summary.');
+        } finally {
+            setLoading(false);
+        }
+    };
     
 
     return (
         <div className="ProjDeets">
             <div className="aibtn">
-                <button className="withai"><i className="tag-icon fa-solid fa-wand-magic-sparkles"></i>Summarize with AI</button>
+                <button className="withai" onClick={handleSummarize}><i className="tag-icon fa-solid fa-wand-magic-sparkles"></i>Summarize with AI</button>
+                {loading && <p>Loading...</p>}
+            {error && <p>{error}</p>}
+            {summary && (
+                <div className="proj-summary">
+                    {/* <h5>Summary:</h5> */}
+                    <p>{summary}</p>
+                </div>
+            )}
             </div>
             <div className='proj-title'>Revamping Public Transportation System in Metropolitan Area</div>
 
@@ -95,6 +155,9 @@ const ProjDeets = () => {
 
                 </span>
             </div>
+            
+
+            <MapComponent />
 
             <ReqResources
                 isVisible={isReqResourcesVisible}

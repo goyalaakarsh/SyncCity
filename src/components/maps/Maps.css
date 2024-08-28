@@ -1,0 +1,12 @@
+#map {
+    /* max-width: 50rem; */
+    height: 30rem;
+    margin-top: 2rem;
+    border-radius: 1rem;
+}
+
+.mapboxgl-popup-content {
+    background-color: var(--m3);
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
