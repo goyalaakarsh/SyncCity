@@ -3,7 +3,6 @@ import './Projects.css';
 import ProjectCard from '../../components/project/projectcard/ProjectCard';
 import {Link, useNavigate} from 'react-router-dom';
 
-import { useNavigate } from 'react-router-dom';
 
 // const dummyProjects = [
 //     {
