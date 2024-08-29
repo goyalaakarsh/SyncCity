@@ -114,3 +114,22 @@ export const getProjectMembers = async (req, res, next) => {
     }
 
 } 
+
+
+export const getProjects = async (req, res, next) => {
+
+    try{
+
+        const projects = await Project.find({});
+
+        if (!projects) {
+            return next(errorHandler(404, 'Cannot Fetch Projects'));
+        }
+
+        res.json(projects);
+
+    }catch(err){
+        next(err);
+    }
+
+}

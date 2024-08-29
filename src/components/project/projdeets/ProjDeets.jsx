@@ -1,15 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProjDeets.css'
 import ReqResources from '../reqresources/ReqResources'
 import mapboxgl from 'mapbox-gl';
+import { useParams } from 'react-router-dom';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapComponent from '../../maps/Maps';
 
 const ProjDeets = () => {
+    const { id } = useParams(); // Get project ID from URL
+    const [project, setProject] = useState(null); // State for storing the project details
+    const [managerName, setManagerName] = useState(''); // State for storing the manager's name
     const [isReqResourcesVisible, setReqResourcesVisible] = useState(false);
     const [summary, setSummary] = useState(''); // State for storing the summary
     const [loading, setLoading] = useState(false); // State for loading indicator
     const [error, setError] = useState(''); // State for error handling
+
+    // Fetch project details when the component mounts
+    useEffect(() => {
+        const fetchProjectDetails = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/project/${id}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                setProject(data);
+                fetchManagerName(data.managerId); // Fetch manager name based on manager ID
+            } catch (error) {
+                console.error('Error fetching project details:', error);
+            }
+        };
+
+        const fetchManagerName = async (managerId) => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/user/${managerId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const userData = await response.json();
+                setManagerName(userData.name);
+            } catch (error) {
+                console.error('Error fetching manager name:', error);
+                setManagerName('Unknown');
+            }
+        };
+
+        fetchProjectDetails();
+    }, [id]);
+    // Empty dependency array to run only once when the component mounts
+
+    if (!project) {
+        return <div>Loading...</div>;
+    }
 
 
     const handleReqResourcesOpen = () => {
@@ -37,21 +79,7 @@ const ProjDeets = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    projectDetails: `Revamping Public Transportation System in Metropolitan Area
-                        Name: Revamping Public Transportation System in Metropolitan Area
-                        Description: Implementation of an AI-powered traffic control system to reduce congestion and improve traffic flow across the city. This project aims to install smart traffic lights, sensors, and cameras at major intersections, which will adapt based on real-time traffic data to minimize delays and ensure smooth traffic flow.
-                        Location: Central Business District, Hyderabad
-                        Participating Departments:
-                        Hyderabad Traffic Police
-                        Municipal Corporation of Hyderabad
-                        Department of Urban Planning
-                        IT Department of Telangana
-                        Project Manager: Rajesh Kumar (Traffic Police)
-                        Other Involved Members:
-                        Anjali Verma (Urban Planning)
-                        Suresh Reddy (Municipal Corporation)
-                        Kavita Sharma (IT Department)
-                    `
+                    projectDetails: project.description,
                 }), 
             });
     
@@ -85,11 +113,13 @@ const ProjDeets = () => {
                 </div>
             )}
             </div>
-            <div className='proj-title'>Revamping Public Transportation System in Metropolitan Area</div>
+            <div className='proj-title'>{project.name}</div>
 
             <div className="proj-tags">
-                <span className='g-tag'>Status: Completed</span>
+                <span className='g-tag'>Status: {project.state}</span>
+                {/* Replace project.state with a status label based on your logic */}
                 <span className='r-tag'>Requests: Pending</span>
+                {/* Commented out or replace with dynamic requests info */}
             </div>
 
             <div className="proj-actions">
@@ -102,19 +132,19 @@ const ProjDeets = () => {
                     <div className="info-icon">
                         <i className="fa-solid fa-user-tie"></i>
                     </div>
-                    <span>Aakarsh Goyal</span>
+                    <span>{managerName}</span>
                 </div>
                 <div className="proj-info-items">
                     <div className="info-icon">
                         <i className="fas fa-map-marker-alt"></i>
                     </div>
-                    <span>Faridabad, Haryana</span>
+                    <span>{project.location}</span>
                 </div>
                 <div className="proj-info-items">
                     <div className="info-icon">
                         <i className="far fa-calendar-alt"></i>
                     </div>
-                    <span>20/08/2024 - 23/09/2027</span>
+                    <span>{new Date(project.startDate).toLocaleDateString()} - {new Date(project.endDate).toLocaleDateString()}</span>
                 </div>
                 <div className="proj-info-items">
                     <div className="info-icon">
@@ -136,23 +166,7 @@ const ProjDeets = () => {
             <div className="proj-desc">
                 <h5>Description:</h5>
                 <span>
-                    The Revamping Public Transportation System in Metropolitan Area project is a comprehensive initiative aimed at modernizing and enhancing the public transport infrastructure to better serve the needs of the metropolitan population. This project seeks to address the current limitations of the transportation network by implementing a series of upgrades and innovations designed to improve efficiency, accessibility, and user experience.
-
-                    The project will focus on several key areas:
-                    1. Infrastructure Upgrades: Replacing outdated transit facilities and expanding transit routes to cover underserved areas. This includes the construction of new bus stations, upgrading rail systems, and improving connectivity between different modes of transport.
-
-                    2. Technology Integration: Incorporating advanced technologies such as real-time tracking systems, smart ticketing solutions, and automated fare collection. These innovations aim to streamline operations, reduce wait times, and provide passengers with up-to-date information on service schedules and disruptions.
-
-                    3. Sustainability Initiatives: Promoting environmentally friendly practices by integrating electric and hybrid vehicles into the fleet, enhancing energy efficiency of transit facilities, and encouraging the use of alternative transportation methods such as cycling and walking.
-
-                    4. Community Engagement: Engaging with residents and stakeholders to gather feedback and ensure that the new systems meet the needs of the community. This involves public consultations, surveys, and partnerships with local organizations to address specific concerns and preferences.
-
-                    5. Safety Improvements: Implementing measures to enhance the safety and security of transit users, including improved lighting at stations, surveillance systems, and better emergency response protocols.
-
-                    6. Economic Impact: The project aims to stimulate economic growth by creating jobs, supporting local businesses, and enhancing the overall attractiveness of the metropolitan area as a place to live and work.
-
-                    The ultimate goal of this project is to create a reliable, efficient, and user-friendly transportation network that supports sustainable development, reduces traffic congestion, and improves the overall quality of life for residents. By addressing current challenges and preparing for future needs, the project seeks to establish a modern public transportation system that can adapt to evolving urban dynamics and contribute to a more connected and vibrant metropolitan community.
-
+                    {project.description} 
                 </span>
             </div>
             

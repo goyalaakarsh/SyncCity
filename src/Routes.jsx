@@ -49,7 +49,7 @@ const AppLayout = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/projects" element={<Projects />} />
                     <Route path="/create-project" element={<NewProject />} />
-                    <Route path="/project-details" element={<ProjectDetails />} />
+                    <Route path="/project-details/:id" element={<ProjectDetails />} />
                     <Route path="/departments" element={<Departments />} />
                     <Route path="/create-department" element={<NewDepart />} />
                     <Route path="/events" element={<Events />} />
