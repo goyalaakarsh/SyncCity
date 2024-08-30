@@ -139,10 +139,6 @@ export const getProjectTasks = async (req, res, next) => {
         console.log(projectId);
         
         const tasks = await Task.find({ projectId });
-
-        if (!tasks.length) {
-            return res.status(404).json({ message: 'No tasks found for this project.' });
-        }
         
         res.status(200).json(tasks);
 
