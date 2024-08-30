@@ -1,5 +1,6 @@
 import Project from "../models/project.model.js";
 import User from "../models/user.model.js";
+import Task from "../models/task.model.js";
 import { errorHandler } from "../utils/error.js";
 
 // Get Project Details
@@ -111,7 +112,7 @@ export const getProjectMembers = async (req, res, next) => {
 };
 
 
-
+// Get all Projects
 export const getProjects = async (req, res, next) => {
 
     try{
@@ -123,6 +124,27 @@ export const getProjects = async (req, res, next) => {
         }
 
         res.json(projects);
+
+    }catch(err){
+        next(err);
+    }
+
+}
+
+
+export const getProjectTasks = async (req, res, next) => {
+
+    try{
+        const projectId  = req.params.id;
+        console.log(projectId);
+        
+        const tasks = await Task.find({ projectId });
+
+        if (!tasks.length) {
+            return res.status(404).json({ message: 'No tasks found for this project.' });
+        }
+        
+        res.status(200).json(tasks);
 
     }catch(err){
         next(err);

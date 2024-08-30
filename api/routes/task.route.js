@@ -11,10 +11,10 @@ const router = express.Router();
 
 // router.get('/:id/members', getProjectMembers) // get project members
 
-router.get("/:id", getTask)
-router.post("/create", createTask);
-router.post("/update/:id", updateTask);
-router.post("/delete/:id", deleteTask);
+router.get("/:id", getTask); // get task details
+router.post("/create", createTask); // create task
+router.post("/update/:id", updateTask); // update task
+router.post("/delete/:id", deleteTask); // delete task
 
 
 
