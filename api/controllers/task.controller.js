@@ -23,6 +23,25 @@ export const getTask = async (req, res, next) => {
     }
 };
 
+export const getTasksByProjectId = async (req, res, next) => {
+    const { projectId } = req.query;
+
+    try {
+        // Ensure projectId is provided
+        if (!projectId) {
+            return res.status(400).json({ message: 'Project ID is required' });
+        }
+
+        // Get task counts based on projectId
+        const completedTasksCount = await Task.countDocuments({ projectId, state: 1 }); // completed tasks
+        const inProgressTasksCount = await Task.countDocuments({ projectId, state: 0 }); // in-progress tasks
+
+        // Respond with the counts
+        res.status(200).json({ completedTasks: completedTasksCount, inProgressTasks: inProgressTasksCount });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const createTask = async (req, res, next) => {
 
