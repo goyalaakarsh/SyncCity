@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NewDepart.css'
 import {Link, useNavigate} from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const NewDepart = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [admins, setAdmins] = useState([]);
     const [formData, setFormData] = useState({
         depName: '',
         depDesc: '',
@@ -32,43 +33,71 @@ const NewDepart = () => {
         }
     }
 
+    const fetchAdmins = async () => {
+        try {
+          console.log("Fetching admins...");
+          const res = await fetch('http://localhost:3000/api/user/admins', {
+            method: 'GET',
+            credentials: 'include',
+          });
+      
+          console.log("Response status:", res.status);
+          console.log("Response OK:", res.ok);
+      
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+      
+          const data = await res.json();
+          console.log("Fetched data:", data);
+          setAdmins(data);
+        } catch (error) {
+          console.error("Error fetching admins:", error);
+          setError('Failed to fetch admins: ' + error.message);
+        }
+      };
+
     const handleChange = (e) => {
         setFormData({
-          ...formData,
-          [e.target.id]: e.target.value,
-        })
-      };
+            ...formData,
+            // [e.target.name]: e.target.value,
+            [e.target.id]: e.target.value,
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          setLoading(true);
-          const res = await fetch('http://localhost:3000/api/department/create', {
-            method: 'POST',
-            headers: {
-              'Content-Type' : 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(formData),
-          });
-      
-          const data = await res.json();
-          console.log(data);
-          
-          if (data.success === false) {
+            setLoading(true);
+            const res = await fetch('http://localhost:3000/api/department/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(formData),
+            });
+    
+            const data = await res.json();
+            console.log('Response data:', data);
+            
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to create department');
+            }
+    
             setLoading(false);
-            setError(data.message);
-            return;
-          }
-          setLoading(false);
-          setError(null);
-          navigate('/root'); //change accordingly
+            setError(null);
+            navigate('/root'); //change accordingly
         } catch (error) {
-          setLoading(false);
-          setError(error.message);
+            setLoading(false);
+            setError(error.message);
+            console.error('Error creating department:', error);
         }
-      
-      };
+    };
+
+    useEffect(() => {
+    fetchAdmins();
+    }, []);
 
   return (
     <div className="maincon">
@@ -103,36 +132,23 @@ const NewDepart = () => {
                 <input type="text" placeholder="Search" id="searchInput" onKeyUp={filterFunction} />
 
                 <div id="dropdownMenu" className="manager-drop card dropdown-content">
-                    <div className="manager-drop-item" htmlFor="member1">
-                        <input type="radio" id="member1" name="projectManager" className="member-checkbox" />
-                        <span htmlFor="member1">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                            <span className="user-name">Priya Sharma</span>
-                        </span>
-                    </div>
-
-                    <div className="manager-drop-item" htmlFor="member2">
-                        <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
-                        <span htmlFor="member2">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                            <span className="user-name">aaaiya Sharma</span>
-                        </span>
-                    </div>
-                    <div className="manager-drop-item" htmlFor="member2">
-                        <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
-                        <span htmlFor="member2">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                            <span className="user-name">aaaiya Sharma</span>
-                        </span>
-                    </div>
-                    <div className="manager-drop-item" htmlFor="member2">
-                        <input type="radio" id="member2" name="projectManager" className="member-checkbox" />
-                        <span htmlFor="member2">
-                            <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                            <span className="user-name">aaaiya Sharma</span>
-                        </span>
-                    </div>
-
+                    {admins.map((admin) => (
+                        <div key={admin._id} className="manager-drop-item">
+                        <input
+                            type="radio"
+                            // id={admin._id}
+                            // name="adminId"
+                            id = "adminId"
+                            value={admin._id}
+                            onChange={handleChange}
+                            className="member-checkbox"
+                        />
+                        <label htmlFor={admin._id}>
+                            <img src={admin.avatar} alt="User Image" className="np-user-img" />
+                            <span className="user-name">{admin.name}</span>
+                        </label>
+                        </div>
+                    ))}
                 </div>
 
             </div>

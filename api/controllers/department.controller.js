@@ -23,24 +23,30 @@ export const getDepartments = async (req, res, next) => {
 
 export const createDepartment = async (req, res, next) => {
     try {
-        console.log('User from request:', req.user);  
-        
+        console.log('Request body:', req.body);  // Log the entire request body
+
+        if (!req.body.adminId) {
+            return res.status(400).json({ success: false, message: 'Admin ID is required' });
+        }
+
         const newDepartment = new Department({
             depName: req.body.depName,
             depDesc: req.body.depDesc,
-            adminId: req.user.id,
+            adminId: req.body.adminId,  // Use the adminId from the request body
             avatar: req.body.avatar || undefined
-        })
+        });
 
-        const savedDeparment = await newDepartment.save();
+        const savedDepartment = await newDepartment.save();
 
-        res.status(201).json(savedDeparment);
+        res.status(201).json(savedDepartment);
     
     } catch(error) {
         console.error('Error in createDepartment:', error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ success: false, message: error.message });
+        }
         next(error);
     }
-
 }
 
 export const updateDepartment = async (req, res, next) => {
@@ -58,7 +64,8 @@ export const updateDepartment = async (req, res, next) => {
         const updatedFields = {};
         if (req.body.depName) updatedFields.depName = req.body.depName;
         if (req.body.depDesc) updatedFields.depDesc = req.body.depDesc;
-        if (req.body.avatar) updatedFields.avatar = req.body.avatar;
+        if (req.body.adminId) updatedFields.adminId = req.body.adminId;
+        if (req.body.avatar) updatedFields.avatar = req.body.avatar;        
 
         if(Object.keys(updatedFields).length === 0){
             return next(errorHandler(400, "No update fields provided"));

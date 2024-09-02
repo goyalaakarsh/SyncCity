@@ -2,6 +2,18 @@ import { errorHandler } from "../utils/error.js";
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
 
+export const getAdmins = async (req, res, next) => {
+    console.log("Fetching admins...");
+    try {
+      const admins = await User.find({ role: 1 }).select('name avatar');
+      console.log("Admins found:", admins);
+      res.json(admins);
+    } catch (error) {
+        console.error("Error fetching admins:", error);
+      next(error);
+    }
+};
+
 export const updateUser = async (req, res, next) => {
     if (req.user.id !== req.params.id) return next(errorHandler(401, "you can only update your own account"));
     try {
