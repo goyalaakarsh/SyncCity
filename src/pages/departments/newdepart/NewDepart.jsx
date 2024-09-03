@@ -67,6 +67,10 @@ const NewDepart = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.depName || !formData.depDesc || !formData.adminId) {
+            setError('Please fill in all required fields');
+            return;
+        }
         try {
             setLoading(true);
             const res = await fetch('http://localhost:3000/api/department/create', {
@@ -155,7 +159,9 @@ const NewDepart = () => {
 
         </div>
 
-        <button className="creatproj btn btn-primary">Create</button>
+        <button className="creatproj btn btn-primary" disabled={loading}>
+                    {loading ? 'Creating...' : 'Create'}
+                </button>
     </form>
 </div>
   )

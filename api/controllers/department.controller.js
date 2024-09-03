@@ -1,4 +1,5 @@
 import Department from "../models/department.model.js";
+import User from "../models/user.model.js";
 import {errorHandler} from '../utils/error.js';
 
 export const getDepartment = async (req, res, next) => {
@@ -23,7 +24,7 @@ export const getDepartments = async (req, res, next) => {
 
 export const createDepartment = async (req, res, next) => {
     try {
-        console.log('Request body:', req.body);  // Log the entire request body
+        console.log('Request body:', req.body);
 
         if (!req.body.adminId) {
             return res.status(400).json({ success: false, message: 'Admin ID is required' });
@@ -32,11 +33,17 @@ export const createDepartment = async (req, res, next) => {
         const newDepartment = new Department({
             depName: req.body.depName,
             depDesc: req.body.depDesc,
-            adminId: req.body.adminId,  // Use the adminId from the request body
+            adminId: req.body.adminId,
             avatar: req.body.avatar || undefined
         });
 
         const savedDepartment = await newDepartment.save();
+
+        // Update the selected admin's depId and role
+        await User.findByIdAndUpdate(req.body.adminId, {
+            depId: savedDepartment._id,
+            role: 1  // Assuming 1 is the role for department admin
+        });
 
         res.status(201).json(savedDepartment);
     
@@ -71,6 +78,12 @@ export const updateDepartment = async (req, res, next) => {
             return next(errorHandler(400, "No update fields provided"));
         }
 
+        // Update the selected admin's depId and role
+        await User.findByIdAndUpdate(req.body.adminId, {
+            depId: department._id,
+            role: 1  // Assuming 1 is the role for department admin
+        });
+
         const updatedDepartment = await Department.findByIdAndUpdate(req.params.id, {
             $set: updatedFields
         }, { new: true });
@@ -97,6 +110,12 @@ export const deleteDepartment = async (req, res, next) => {
 
         if(!department) return next(errorHandler(404, "Department not found"));
         const dName = department.depName;
+        const adminId = department.adminId;
+
+        await User.findByIdAndUpdate(adminId, {
+            depId: "66c968135c51c93d0dea604e", //hard coded updated with root dept id whic can never be deleted
+            role: 1  // Assuming 1 is the role for department admin
+        });
 
         await Department.findByIdAndDelete(req.params.id);
 
