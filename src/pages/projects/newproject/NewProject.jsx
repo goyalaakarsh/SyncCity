@@ -179,6 +179,47 @@ const NewProject = () => {
                 <div className="member-con row ">
                     <div className="sel-manager-con card col">
                         <label>
+                            Add Departments to this project
+                        </label>
+
+                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
+
+                        <div id="dropdownMenu" className="manager-drop card dropdown-content">
+                            <div className="manager-drop-item" htmlFor="member1">
+                                <input type="radio" id="member1" name="projectManager" className="member-checkbox" required/>
+                                <span htmlFor="member1">
+                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
+                                    <span className="user-name">Priya Sharma</span>
+                                </span>
+                            </div>
+
+                            <div className="manager-drop-item" htmlFor="member2">
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
+                                <span htmlFor="member2">
+                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
+                                    <span className="user-name">aaaiya Sharma</span>
+                                </span>
+                            </div>
+                            <div className="manager-drop-item" htmlFor="member2">
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
+                                <span htmlFor="member2">
+                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
+                                    <span className="user-name">aaaiya Sharma</span>
+                                </span>
+                            </div>
+                            <div className="manager-drop-item" htmlFor="member2">
+                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
+                                <span htmlFor="member2">
+                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
+                                    <span className="user-name">aaaiya Sharma</span>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div className="sel-manager-con card col">
+                        <label>
                             Select a Project Manager
                         </label>
 

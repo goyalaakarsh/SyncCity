@@ -7,19 +7,17 @@ import './Maps.css'; // Ensure this file has appropriate styles
 // Ensure to replace this with your actual Mapbox access token
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoibWFuYXYyMTM5IiwiYSI6ImNtMDZzNzRvczB1ZzYyanIwYXhuOTV1YTgifQ.C8n51wmwsawqdCfcV67nHQ'; // Replace with your actual token
 
-const App = () => {
+const MapComponent = ({ location, projectName }) => {
   const [longitude, setLongitude] = useState(null);
   const [latitude, setLatitude] = useState(null);
 
   useEffect(() => {
-    // Initialize Mapbox geocoding client
     const geocodingClient = mbxGeocoding({ accessToken: MAPBOX_ACCESS_TOKEN });
 
-    // Function to fetch location data
     const fetchLocation = async () => {
       try {
         const response = await geocodingClient.forwardGeocode({
-          query: 'New Delhi, India',
+          query: location,
           limit: 1
         }).send();
         
@@ -27,47 +25,42 @@ const App = () => {
           const [lng, lat] = response.body.features[0].geometry.coordinates;
           setLongitude(lng);
           setLatitude(lat);
-          
-          console.log(response.body);
         }
       } catch (error) {
         console.error('Error fetching location:', error);
       }
     };
 
-    fetchLocation();
-  }, []);
+    if (location) {
+      fetchLocation();
+    }
+  }, [location]);
 
   useEffect(() => {
     if (longitude && latitude) {
       mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
-      // Initialize the map
       const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [longitude, latitude], // Starting position [lng, lat]
+        center: [longitude, latitude],
         zoom: 12
       });
 
-      // Add navigation controls
       map.addControl(new mapboxgl.NavigationControl());
 
-      // Create and add a popup
       const popup = new mapboxgl.Popup({ offset: 25 })
         .setHTML(`
-          <h5>Project Name</h5>
-          <p><strong>Location:</strong> New Delhi, India</p>
+          <h5>${projectName}</h5>
+          <p><strong>Location:</strong> ${location}</p>
           <p><strong>Coordinates:</strong> ${latitude.toFixed(4)}, ${longitude.toFixed(4)}</p>
         `);
 
-      // Create and add a marker
       const marker = new mapboxgl.Marker()
         .setLngLat([longitude, latitude])
         .setPopup(popup)
         .addTo(map);
 
-      // Add event listeners for hover effect
       map.on('mouseenter', 'marker-layer', () => {
         popup.addTo(map);
       });
@@ -78,13 +71,11 @@ const App = () => {
 
       return () => map.remove();
     }
-  }, [longitude, latitude]);
+  }, [longitude, latitude, location, projectName]);
 
   return (
-    <div>
-      <div id="map" ></div>
-    </div>
+    <div id="map" style={{ width: '100%', height: '400px' }}></div>
   );
 };
 
-export default App;
+export default MapComponent;

@@ -171,13 +171,16 @@ const ProjDeets = () => {
             </div>
             
 
-            <MapComponent />
+            {/* <MapComponent /> */}
+            {project && project.location && (
+                <MapComponent location={project.location} projectName={project.name} />
+            )}
 
-            <ReqResources
+            {/* <ReqResources
                 isVisible={isReqResourcesVisible}
                 onClose={handleReqResourcesClose}
                 onSave={handleSaveResources}
-            />
+            /> */}
         </div>
     )
 }
