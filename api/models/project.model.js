@@ -22,21 +22,23 @@ const projectSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    state: {
+    state: { // 0 -> ongoing 1 -> completed
         type: Number,
-        required: true,
+        // required: true,
         default: 0
     },
     depId: [
-        {
+        { //dep id and manager id made false for now
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department',
-        required: true,}
+        // required: true,
+    }
     ],
     managerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: true,
+        default: '66c89c4ca55b8e6d57574695'
     }
 
 }, {timestamps: true});

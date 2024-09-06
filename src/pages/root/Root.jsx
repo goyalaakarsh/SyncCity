@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import DepartDeets from '../../components/department/departdeets/DepartDeets';
 import DepartListCard from '../../components/department/departlistcard/DepartListCard';
+import { useNavigate } from 'react-router-dom';
 
 const Root = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-
+  const navigate = useNavigate();
   // Function to fetch departments
+  
   const fetchDepartments = async () => {
     try {
       const res = await fetch('http://localhost:3000/api/department');

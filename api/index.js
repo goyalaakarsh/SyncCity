@@ -5,9 +5,15 @@ import authRouter from './routes/auth.route.js';
 import userRouter from './routes/user.route.js';
 import departmentRouter from './routes/department.route.js'; 
 import projectRouter from './routes/project.route.js';
+import taskRouter from './routes/task.route.js';
 import cookieParser from 'cookie-parser';
 import summarizerRouter from './routes/summarizer.route.js';
 import cors from 'cors';
+
+// import ReactDOM from 'react-dom';
+// import AppRoutes from './Routes'
+
+
 
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(() => {
@@ -33,6 +39,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/department", departmentRouter);
 app.use("/api/project", projectRouter);
+app.use("/api/task", taskRouter);
 app.use('/api/aiml', summarizerRouter);
 
 app.use((err, req, res, next) => {
