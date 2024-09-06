@@ -11,13 +11,14 @@ import Login from './pages/onboarding/Login'
 import NewDepart from './pages/departments/newdepart/NewDepart'
 import Home from './pages/home/Home'
 import AppRoutes from './Routes'
+import { UserProvider } from './UserContext';
 
 function App() {
 
   return (
-    <>
+    <UserProvider>
       <AppRoutes />
-    </>
+    </UserProvider>
   )
 }
 

@@ -45,12 +45,9 @@ export const login = async (req, res, next) => {
 
         res.cookie('access_token', token, {
             httpOnly: true,
-            sameSite: 'lax',  
+            sameSite: 'lax',
             secure: false,  
-        }).status(200).json({
-            user: rest,
-            role: validUser.role
-        });
+        }).status(200).json({ ...rest, role: validUser.role });
 
     } catch (error) {
         next(error);
@@ -86,14 +83,12 @@ export const google = async (req, res, next) => {
 
             const token = jwt.sign({ id: newUser._id}, process.env.JWT_SECRET);
             const {password: pass, ...rest} = newUser._doc;
+            
             res.cookie('access_token', token, {
                 httpOnly: true,
-                sameSite: 'lax',  
+                sameSite: 'lax',
                 secure: false,  
-            }).status(200).json({
-                user: rest,
-                role: validUser.role
-            });
+            }).status(200).json({ ...rest, role: validUser.role });
         }
     } catch (error) {
         next(error);

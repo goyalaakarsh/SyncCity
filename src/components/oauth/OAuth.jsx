@@ -3,8 +3,10 @@ import {getAuth, GoogleAuthProvider, signInWithPopup} from 'firebase/auth';
 import { app } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import '../../pages/onboarding/Signup.css';
+import { useUser } from '../../UserContext.jsx'; // Update the path as needed
 
 export default function OAuth() {
+    const { dispatch } = useUser();
     const navigate = useNavigate();
     const handleGoogleClick = async () => {
         try {
@@ -27,8 +29,21 @@ export default function OAuth() {
                 throw new Error(`HTTP error! status: ${res.status}, message: ${errorData}`);
             }
 
-
             const data = await res.json();
+            const normalizedUserData = {
+                id: data._id || data.id,
+                name: data.name,
+                email: data.email,
+                role: data.role,
+                depId: data.depId,
+                avatar: data.avatar,
+                // Add any other fields you need
+              };
+        
+              console.log(normalizedUserData);
+        
+              dispatch({ type: 'LOGIN', payload: normalizedUserData });
+        
             navigate('/dashboard');
         } catch (error) {
             console.log('Unable to continue with Google', error);
