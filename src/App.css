@@ -212,8 +212,8 @@ body {
   padding: 0.2rem 0.7rem;
   background-color: rgba(16, 206, 54, 0.4);
   color: var(--m1);
-
 }
+
 .y-tag {
   border: 0.2rem solid #FFC508;
   border-radius: 0.3rem;
@@ -229,8 +229,6 @@ body {
   background-color: rgba(76, 142, 240, 0.4);
   color: var(--m1);
 }
-
-
 
 h1,
 h2,
