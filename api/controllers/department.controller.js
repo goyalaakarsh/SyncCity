@@ -96,6 +96,27 @@ export const updateDepartment = async (req, res, next) => {
 
 }
 
+export const joinDepartment = async (req, res, next) => {
+    const { departmentCode } = req.body;
+    const userId = req.user.id; // Extracted from the verified token
+
+    try {
+        const department = await Department.findById(departmentCode);
+        if (!department) {
+            return res.status(404).json({ message: 'Department not found' });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            userId, 
+            { depId: department._id }, 
+            { new: true }
+        );
+
+        return res.status(200).json({ message: 'Department joined successfully', user });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const deleteDepartment = async (req, res, next) => {
     console.log('Cookies:', req.cookies); // Log all cookies
