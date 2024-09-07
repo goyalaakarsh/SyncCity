@@ -1,6 +1,6 @@
 import { errorHandler } from "../utils/error.js";
 import Task from "../models/task.model.js";
-
+import Project from "../models/project.model.js";
 
 export const getTask = async (req, res, next) => {
     const taskId  = req.params.id;
