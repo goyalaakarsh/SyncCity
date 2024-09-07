@@ -191,11 +191,11 @@ const ProjDeets = () => {
                 <MapComponent location={project.location} projectName={project.name} />
             )}
 
-            {/* <ReqResources
+            <ReqResources
                 isVisible={isReqResourcesVisible}
                 onClose={handleReqResourcesClose}
                 onSave={handleSaveResources}
-            /> */}
+            />
         </div>
     )
 }
