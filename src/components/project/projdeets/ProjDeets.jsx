@@ -14,6 +14,20 @@ const ProjDeets = () => {
     const [summary, setSummary] = useState(''); // State for storing the summary
     const [loading, setLoading] = useState(false); // State for loading indicator
     const [error, setError] = useState(''); // State for error handling
+    const [departments, setDepartments] = useState([]);
+
+    const fetchDepartmentNames = async (depIds) => {
+        try {
+          const promises = depIds.map(id => 
+            fetch(`http://localhost:3000/api/department/${id}`).then(res => res.json())
+          );
+          const departmentsData = await Promise.all(promises);
+          setDepartments(departmentsData.map(dep => dep.depName));
+        } catch (error) {
+          console.error('Error fetching department names:', error);
+          setDepartments(['Error fetching departments']);
+        }
+      };
 
     // Fetch project details when the component mounts
     useEffect(() => {
@@ -26,6 +40,7 @@ const ProjDeets = () => {
                 const data = await response.json();
                 setProject(data);
                 fetchManagerName(data.managerId); // Fetch manager name based on manager ID
+                fetchDepartmentNames(data.depId);
             } catch (error) {
                 console.error('Error fetching project details:', error);
             }
@@ -157,9 +172,9 @@ const ProjDeets = () => {
             <div className="proj-depart">
                 <p>Departments:</p>
                 <div className='depart-list'>
-                    <li>Finance</li>
-                    <li>Marketing</li>
-                    <li>Sales</li>
+                    {departments.map((dep, index) => (
+                    <li key={index}>{dep}</li>
+                    ))}
                 </div>
             </div>
 
@@ -176,11 +191,11 @@ const ProjDeets = () => {
                 <MapComponent location={project.location} projectName={project.name} />
             )}
 
-            {/* <ReqResources
+            <ReqResources
                 isVisible={isReqResourcesVisible}
                 onClose={handleReqResourcesClose}
                 onSave={handleSaveResources}
-            /> */}
+            />
         </div>
     )
 }

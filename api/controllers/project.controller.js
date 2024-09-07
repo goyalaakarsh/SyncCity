@@ -4,6 +4,7 @@ import Task from "../models/task.model.js";
 import { errorHandler } from "../utils/error.js";
 import { createProjectChatroom } from "./chat.controller.js";
 import axios from 'axios';
+import mongoose from 'mongoose'; // Import mongoose for ID validation
 
 // Get Project Details
 export const getProjectDetails = async (req, res, next) => {
@@ -17,56 +18,30 @@ export const getProjectDetails = async (req, res, next) => {
     }
 };
 
-// Create a New Project
 export const createProject = async (req, res, next) => {
     try {
-        // Check if managerId is provided and is a valid ObjectId
-        // if (!managerId) {
-        //     return res.status(400).json({ message: 'Invalid or missing managerId' });
-        // }
+        const { name, description, location, startDate, endDate, depId, managerId } = req.body;
 
-        // if (!req.body.managerId || !mongoose.Types.ObjectId.isValid(req.body.managerId)) {
-        //     return next(errorHandler(400, 'Invalid or missing managerId'));
-        // }
-
-        console.log("in create project");
-        console.log(req);
-
+        // Validate required fields
+        if (!name || !description || !startDate || !endDate || !managerId) {
+            return res.status(400).json({ message: 'All required fields must be provided' });
+        }
 
         const newProject = new Project({
-            name: req.body.name,
-            description: req.body.description,
-            location: req.body.location,
-            startDate: new Date(req.body.startDate), // date format 'YYYY-MM-DD'
-            endDate: new Date(req.body.endDate), // date format 'YYYY-MM-DD'
-            state: req.body.state,
-            depId: req.body.depId,
-            managerId: req.body.managerId // This should now be validated
+            name,
+            description,
+            location: location || "Not Available",
+            startDate,
+            endDate,
+            depId: depId || [], // Handle as an array
+            managerId
         });
 
         const savedProject = await newProject.save();
 
-        console.log(savedProject);
-
-
-        // Call the create project chatroom route
-        const chatRoomResponse = await axios.post('http://localhost:3000/api/chat/create-project-room', {
-            projectId: savedProject._id, // Send the projectId to the route
-        },
-         {
-            headers: {
-            Authorization: req.headers.authorization // Pass the auth token if necessary
-            }
-        });
-
-
-        res.status(201).json({
-            message: 'Project and chatroom created successfully',
-            project: savedProject,
-            chatRoom: chatRoomResponse.data
-        });
-
+        res.status(201).json(savedProject);
     } catch (error) {
+        console.error('Error creating project:', error);
         next(error);
     }
 };

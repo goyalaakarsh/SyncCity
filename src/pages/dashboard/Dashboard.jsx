@@ -14,6 +14,8 @@ const Dashboard = () => {
     BarElement,
     Title, Tooltip, Legend, TimeScale);
 
+    // Bar
+
   const bardata = {
     labels: ['Project A', 'Project B', 'Project C', 'Project D', 'Project E'],
     datasets: [
@@ -63,64 +65,68 @@ const Dashboard = () => {
   };
 
 
+    // Doughnut
   const [doughdata, setData] = useState({ inProgress: 0, completed: 0 });
 
   useEffect(() => {
-      const fetchData = async () => {
-          try {
-              const response = await fetch('http://localhost:3000/api/dashboard/project-stats');
-              if (!response.ok) {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              console.log(response);
-              const data = await response.json(); 
-              console.log(data);
-              setData({
-                  inProgress: data.inProgress,
-                  completed: data.completed
-              });
-          } catch (error) {
-              console.error('Error fetching project stats:', error);
-          }
-      };
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/dashboard/project-stats');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // console.log(response);
+        const data = await response.json();
+        console.log(data);
+        setData({
+          inProgress: data.inProgress,
+          completed: data.completed
+        });
+      } catch (error) {
+        console.error('Error fetching project stats:', error);
+      }
+    };
 
-      fetchData();
+    fetchData();
   }, []);
 
   const doughnutData = {
-      labels: ['Projects In Progress', 'Projects Completed'],
-      datasets: [
-          {
-              data: [doughdata.inProgress, doughdata.completed],
-              backgroundColor: ['#FF6384', '#36A2EB'],
-              hoverBackgroundColor: ['#FF6384', '#36A2EB'],
-          },
-      ],
+    labels: ['Projects In Progress', 'Projects Completed'],
+    datasets: [
+      {
+        data: [doughdata.inProgress, doughdata.completed],
+        backgroundColor: ['#FF6384', '#36A2EB'],
+        hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+      },
+    ],
   };
 
   const doughnutOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-          legend: {
-              position: 'right',
-          },
-          tooltip: {
-              callbacks: {
-                  label: function(context) {
-                      let label = context.label || '';
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            let label = context.label || '';
 
-                      if (context.parsed !== null) {
-                          label += `: ${context.parsed}`;
-                      }
+            if (context.parsed !== null) {
+              label += `: ${context.parsed}`;
+            }
 
-                      return label;
-                  }
-              }
+            return label;
           }
+        }
       }
+    }
   };
 
+
+    // Stacked
+    
   const stackeddata = {
     labels: ['Project A', 'Project B', 'Project C', 'Project D', 'Project E'],
     datasets: [
@@ -173,28 +179,25 @@ const Dashboard = () => {
   };
 
 
-//Timeline
+  // Timeline
+  const [timelineData, setTimelineData] = useState([]);
 
-const [timelineData, setTimelineData] = useState([]);
-
-useEffect(() => {
+  useEffect(() => {
     const fetchTimelineData = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/api/dashboard/project-timeline');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            setTimelineData(data);
-        } catch (error) {
-            console.error('Error fetching project timeline:', error);
+      try {
+        const response = await fetch('http://localhost:3000/api/dashboard/project-timeline');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        const data = await response.json();
+        setTimelineData(data);
+      } catch (error) {
+        console.error('Error fetching project timeline:', error);
+      }
     };
 
     fetchTimelineData();
-}, []);
-
-
+  }, []);
 
   const currentYear = new Date().getFullYear();
   const startOfYear = new Date(currentYear, 0, 1);
@@ -202,31 +205,31 @@ useEffect(() => {
 
   const tldata = {
     labels: timelineData.map(project => project.name),
-        datasets: [
-            {
-                label: 'Project Timeline',
-                data: timelineData.map(project => [
-                    new Date(project.startDate),
-                    new Date(project.endDate)
-                ]),
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(54, 162, 235, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(75, 192, 192, 0.5)',
-                    'rgba(153, 102, 255, 0.5)',
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 206, 86)',
-                    'rgb(75, 192, 192)',
-                    'rgb(153, 102, 255)',
-                ],
-                borderWidth: 1,
-            },
+    datasets: [
+      {
+        label: 'Project Timeline',
+        data: timelineData.map(project => [
+          new Date(project.startDate),
+          new Date(project.endDate)
+        ]),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
         ],
-    };
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 206, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(153, 102, 255)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   const tloptions = {
     indexAxis: 'y',
     responsive: true,
@@ -280,23 +283,25 @@ useEffect(() => {
 
       </div>
 
-     <div className="charts">
-     <div className=" mb-5 chart">
-      <Doughnut className='chart' data={doughnutData} options={doughnutOptions} />
+      <div className="charts">
+        <div className=" mb-5 chart">
+          <Doughnut className='chart' data={doughnutData} options={doughnutOptions} />
+        </div>
+
+        <div className="chart">
+          <Bar className="chart" data={tldata} options={tloptions} />
+        </div>
+
+        <div className=" chart">
+          <Bar className='chart' data={bardata} options={baroptions} />
+        </div>
+
+        <div className="chart">
+          <Bar className='chart' data={stackeddata} options={stackedoptions} />
+        </div>
+
+
       </div>
-
-      <div className=" chart">
-        <Bar className='chart' data={bardata} options={baroptions} />
-      </div>
-
-      <div className="chart">
-      <Bar className='chart' data={stackeddata} options={stackedoptions} />
-    </div>
-
-    <div className="chart">
-      <Bar className="chart"  data={tldata} options={tloptions} />
-    </div>
-     </div>
     </div>
   )
 }
