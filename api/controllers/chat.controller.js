@@ -53,7 +53,7 @@ export const createProjectChatroom = async (req, res) => {
 
     const params = new sb.GroupChannelParams(); 
     params.invitedUserIds = userIds;            
-    params.name = `Project Chat`;  
+    params.name = `${project.name} Project Chat`;  
     params.isDistinct = false;     
     
     const channel = await sb.GroupChannel.createChannel(params, (channel, error) => {});  // Create the group channel
@@ -68,8 +68,6 @@ export const createProjectChatroom = async (req, res) => {
     res.status(500).json({ error: error });
   }
 };
-
-
 
 export const createDepartmentChatroom = async (req, res) => {
   const { departmentId } = req.body;
