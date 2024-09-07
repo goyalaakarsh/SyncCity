@@ -1,5 +1,5 @@
 import express from 'express';
-import {getAdmins, getUser, updateUser, deleteUser} from '../controllers/user.controller.js'
+import {getAdmins, getUser, updateUser, deleteUser, assignProjectToUsers} from '../controllers/user.controller.js'
 import { verifyToken } from '../utils/verifyUser.js';
 
 const router = express.Router();
@@ -9,6 +9,7 @@ router.get('/:id', getUser); // can be used to get details of manager of project
 router.post('/update/:id', verifyToken, updateUser);
 router.delete('/delete/:id', verifyToken, deleteUser);
 
+router.post('/assignProject', verifyToken, assignProjectToUsers);
 // router.get('/userProjects', verifyToken, ); // get all the projects of a user 
 // router.get('/userDepartment', verifyToken) // get user's department
 
