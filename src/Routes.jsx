@@ -35,7 +35,7 @@ const AppRoutes = () => {
 const AppLayout = () => {
     const { state } = useUser();
     const location = useLocation();
-    const hideNavbarRoutes = ['/', '/signup', '/login', '/root', '/create-department'];
+    const hideNavbarRoutes = ['/', '/signup', '/login', '/root', '/join'];
     const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
     const shouldShowFooter = true; // Adjust this if needed
   
