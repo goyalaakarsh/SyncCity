@@ -2,6 +2,8 @@ import Project from "../models/project.model.js";
 import User from "../models/user.model.js";
 import Task from "../models/task.model.js";
 import { errorHandler } from "../utils/error.js";
+import { createProjectChatroom } from "./chat.controller.js";
+import axios from 'axios';
 
 // Get Project Details
 export const getProjectDetails = async (req, res, next) => {
@@ -44,7 +46,26 @@ export const createProject = async (req, res, next) => {
 
         const savedProject = await newProject.save();
 
-        res.status(201).json(savedProject);
+        console.log(savedProject);
+
+
+        // Call the create project chatroom route
+        const chatRoomResponse = await axios.post('http://localhost:3000/api/chat/create-project-room', {
+            projectId: savedProject._id, // Send the projectId to the route
+        },
+         {
+            headers: {
+            Authorization: req.headers.authorization // Pass the auth token if necessary
+            }
+        });
+
+
+        res.status(201).json({
+            message: 'Project and chatroom created successfully',
+            project: savedProject,
+            chatRoom: chatRoomResponse.data
+        });
+
     } catch (error) {
         next(error);
     }
