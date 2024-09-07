@@ -44,7 +44,8 @@ export const createProjectChatroom = async (req, res) => {
     params.name = `${project.name} Project Chat`;  
     params.isDistinct = false;     
     
-    const channel = await sb.GroupChannel.createChannel(params, (channel, error) => {});  // Create the group channel
+
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, null, (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
