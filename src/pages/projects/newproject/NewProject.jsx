@@ -346,7 +346,6 @@ const NewProject = () => {
                         </div>
                     </div>
                 </div>
-                {error && <p className="error-message">{error}</p>}
                 
                 <button className="creatproj btn btn-primary" type="submit">Create Project</button>
                 {/* <button className="creatproj btn btn-primary" onClick={handleFormSubmit}>Create Project</button> */}
