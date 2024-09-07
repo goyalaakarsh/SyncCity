@@ -127,57 +127,109 @@ const Dashboard = () => {
 
     // Stacked
     
-  const stackeddata = {
-    labels: ['Project A', 'Project B', 'Project C', 'Project D', 'Project E'],
-    datasets: [
-      {
-        label: 'Completed Tasks',
-        data: [12, 19, 3, 5, 2],
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
-      },
-      {
-        label: 'Tasks in Progress',
-        data: [8, 7, 2, 3, 6],
-        backgroundColor: 'rgba(255, 159, 64, 0.6)',
-        borderColor: 'rgba(255, 159, 64, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const stackedoptions = {
-    indexAxis: 'x',
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        stacked: true,
-        title: {
-          display: true,
-          text: 'Number of Tasks',
+    const [stackedData, setStackedData] = useState({
+      labels: [],
+      datasets: [
+        {
+          label: 'Completed Tasks',
+          data: [],
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Tasks in Progress',
+          data: [],
+          backgroundColor: 'rgba(255, 159, 64, 0.6)',
+          borderColor: 'rgba(255, 159, 64, 1)',
+          borderWidth: 1,
+        },
+      ],
+    });
+  
+    // New useEffect for fetching stacked bar chart data
+    useEffect(() => {
+      const fetchStackedData = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/project');
+          const projects = response.data;
+  
+          const projectData = await Promise.all(
+            projects.map(async (project) => {
+              const taskCountsResponse = await axios.get(`http://localhost:3000/api/task?projectId=${project._id}`);
+              return {
+                name: project.name,
+                completedTasks: taskCountsResponse.data.completedTasks,
+                inProgressTasks: taskCountsResponse.data.inProgressTasks,
+              };
+            })
+          );
+  
+          // Filter out projects with zero tasks
+          const filteredProjectData = projectData.filter(
+            project => project.completedTasks > 0 || project.inProgressTasks > 0
+          );
+  
+          setStackedData({
+            labels: filteredProjectData.map(project => project.name),
+            datasets: [
+              {
+                label: 'Completed Tasks',
+                data: filteredProjectData.map(project => project.completedTasks),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+              },
+              {
+                label: 'Tasks in Progress',
+                data: filteredProjectData.map(project => project.inProgressTasks),
+                backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1,
+              },
+            ],
+          });
+        } catch (error) {
+          console.error('Error fetching stacked bar chart data:', error);
+        }
+      };
+  
+      fetchStackedData();
+    }, []);
+  
+    // ... (keep other chart configurations)
+  
+    const stackedoptions = {
+      indexAxis: 'x',
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Project Names',
+          },
+        },
+        y: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Number of Tasks',
+          },
         },
       },
-      y: {
-        stacked: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
         title: {
           display: true,
-          text: 'Project Names',
+          text: 'Project Tasks: Completed vs In Progress',
         },
       },
-    },
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Project Tasks: Completed vs In Progress',
-      },
-    },
-  };
-
+    };
+  
 
   // Timeline
   const [timelineData, setTimelineData] = useState([]);
@@ -276,6 +328,7 @@ const Dashboard = () => {
       },
     },
   };
+
   return (
     <div className="maincon">
       <div className="dashboard-topcon">
@@ -297,7 +350,7 @@ const Dashboard = () => {
         </div>
 
         <div className="chart">
-          <Bar className='chart' data={stackeddata} options={stackedoptions} />
+          <Bar className='chart' data={stackedData} options={stackedoptions} />
         </div>
 
 
