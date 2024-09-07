@@ -15,6 +15,27 @@ export const getAdmins = async (req, res, next) => {
     }
 };
 
+export const assignProjectToUsers = async (req, res, next) => {
+    const { projectId, userIds } = req.body; // userIds is an array of user IDs, including the manager
+
+    try {
+        if (!projectId || !userIds || !Array.isArray(userIds)) {
+            return next(errorHandler(400, "Invalid request data"));
+        }
+
+        // Loop through the userIds and update each user's projectId array
+        const updatedUsers = await User.updateMany(
+            { _id: { $in: userIds } }, // Select users whose IDs are in the userIds array
+            { $addToSet: { projectId: projectId } }, // Add the projectId to their projectId array
+            { new: true }
+        );
+
+        res.status(200).json({ message: "Users successfully updated with projectId", updatedUsers });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const updateUser = async (req, res, next) => {
     if (req.user.role >= 2 && req.user.id !== req.params.id) return next(errorHandler(401, "you can only update your own account"));
     try {

@@ -6,6 +6,13 @@ import Department from '../models/department.model.js';
 import Project from '../models/project.model.js';
 import { channel } from 'diagnostics_channel';
 import { getSendbirdObject } from '../utils/helper.js';
+import axios from 'axios';
+import dotenv from 'dotenv';
+// require('dotenv').config();
+dotenv.config();
+
+const API_TOKEN = process.env.API_TOKEN;
+const APPLICATION_ID = process.env.APPLICATION_ID;
 
 const sb = getSendbirdObject();
 
@@ -39,12 +46,9 @@ export const createProjectChatroom = async (req, res) => {
       }
     });
 
-    const params = new sb.GroupChannelParams(); 
-    params.invitedUserIds = userIds;            
-    params.name = `${project.name} Project Chat`;  
-    params.isDistinct = false;     
     
-    const channel = await sb.GroupChannel.createChannel(params, (channel, error) => {});  // Create the group channel
+
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, "Project", (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
@@ -59,6 +63,7 @@ export const createProjectChatroom = async (req, res) => {
 
 export const createDepartmentChatroom = async (req, res) => {
   const { departmentId } = req.body;
+  let userIds = null;
   
   try {
     // Fetch department details and populate adminId
@@ -66,72 +71,72 @@ export const createDepartmentChatroom = async (req, res) => {
     if (!department) {
       return res.status(404).json({ error: 'Department not found' });
     }
+    
 
     // Get all employees in the department
     const employees = await User.find({ depId: departmentId });
     const employeeIds = employees.map(emp => emp._id.toString());
+    
 
-    // Create the chatroom for the department with admin and employees
-    // sb.GroupChannel.createChannelWithUserIds(
-    //   [...employeeIds, department.adminId._id.toString()],
-    //   true,
-    //   departmentId,
-    //   `${department.depName} Department Chat`,
-    //   '', // Optionally add cover image URL
-    //   '', // Optionally add custom data
-    //   {},
-    //   (channel, error) => {
-    //     if (error) {
-    //       return res.status(500).json({ error: 'Failed to create department chatroom' });
-    //     }
-    //     res.status(201).json({ message: 'Department chatroom created successfully', channel });
-    //   }
-    // );
+    await sb.connect(department.adminId.id.toString(), (user, error) => {
+      if (error) {
+        console.error('Connection failed: ', error);
+      } else {
+        console.log('Connected as: ', user.nickname);
+      }
+    });
+    
+    userIds = [department.adminId.id.toString(), ...employeeIds]
+
+
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${department.depName} Department Chat`,null, null, "Department", (channel, error) => {});  // Create the group channel
+
+    res.status(201).json({
+      "status":"Channel Created",
+      "group_name":channel.name,
+      "group_url":channel.url    
+    })
 
     
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: error });
   }
 };
 
 
 export const getRelevantChannels = async (req, res) => {
-    const userId = req.user._id;
+    const userId = req.user.id;
     
     try {
       // Fetch user details and populate department and projectId
+      console.log(userId);
       const user = await User.findById(userId).populate('depId').populate('projectId');
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
-
-      // Connect to Sendbird using the userId
-      sb.connect(user._id.toString(), (sbUser, error) => {
-        if (error) {
-          return res.status(500).json({ error: 'Failed to connect to Sendbird' });
-        }
-  
-        // Create query to list user's channels
-        const listQuery = sb.GroupChannel.createMyGroupChannelListQuery();
-        listQuery.includeEmpty = true;
+      
+      console.log(APPLICATION_ID);
+      const params = {
+        members_include_in: userId,       // Filter channels by the user being a member
+        limit: 20                         // Limit the number of results (optional)
+      };
+            axios.get(`https://api-${APPLICATION_ID}.sendbird.com/v3/group_channels`, {
+        headers: {
+          'Api-Token': API_TOKEN
+        },
+        params: params          
+      })
+      .then(response => {
         
-        // Fetch all relevant channels
-        listQuery.next((channels, error) => {
-          if (error) {
-            return res.status(500).json({ error: 'Failed to fetch channels' });
-          }
-  
-          // Filter channels based on department and project associations
-          const relevantChannels = channels.filter(channel => {
-            return (
-              channel.customType === user.depId._id.toString() ||
-              user.projectId.map(proj => proj._id.toString()).includes(channel.customType)
-            );
-          });
-  
-          res.status(200).json({ channels: relevantChannels });
-        });
+        // console.log('Group Channels:', response.data);
+        return res.json({"Group Channels": response.data})
+      })
+      .catch(error => {
+        
+        console.error('Error fetching group channels:', error);
       });
+      
+      
     } catch (error) {
       res.status(500).json({ error: 'Server error' });
     }

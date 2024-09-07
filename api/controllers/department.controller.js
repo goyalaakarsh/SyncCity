@@ -22,6 +22,25 @@ export const getDepartments = async (req, res, next) => {
     }
 };
 
+export const getMembersByDepartments = async (req, res, next) => {
+    try {
+        const { departmentIds } = req.body;
+
+        // Validate input
+        if (!Array.isArray(departmentIds) || departmentIds.length === 0) {
+            return res.status(400).json({ message: 'Invalid department IDs' });
+        }
+
+        // Fetch members who belong to any of the given departments
+        const members = await User.find({ depId: { $in: departmentIds } }).select('name _id'); // Adjust fields as needed
+
+        res.status(200).json(members);
+    } catch (error) {
+        console.error('Error fetching members by departments:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 export const createDepartment = async (req, res, next) => {
     try {
         console.log('Request body:', req.body);
