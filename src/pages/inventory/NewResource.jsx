@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Inventory.css';
 
 const NewResource = ({ isVisible, onClose, onSave }) => {
     const [resourceName, setResourceName] = useState('');
     const [quantity, setQuantity] = useState('');
+    const [error, setError] = useState('');
 
     if (!isVisible) return null;
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (resourceName.trim() && quantity > 0) {
-            onSave({ name: resourceName, quantity }); // Pass both resource name and quantity to the parent
-            setResourceName(''); // Clear the input after saving
-            setQuantity(''); // Clear the quantity after saving
-            onClose(); // Close the modal
+            try {
+                const response = await axios.post('http://localhost:3000/api/resource/add', {
+                    name: resourceName,
+                    quantity: parseInt(quantity)
+                });
+                onSave(response.data.resource); // Pass the saved resource to the parent
+                setResourceName('');
+                setQuantity('');
+                setError('');
+                onClose();
+            } catch (error) {
+                setError('Failed to add resource. Please try again.');
+                console.error('Error adding resource:', error);
+            }
         } else {
-            alert('Please enter a valid resource name and quantity.');
+            setError('Please enter a valid resource name and quantity.');
         }
     };
 
@@ -44,6 +56,8 @@ const NewResource = ({ isVisible, onClose, onSave }) => {
                         placeholder="Enter quantity"
                     />
                 </div>
+
+                {error && <p className="error-message">{error}</p>}
 
                 <div className="req-resources-actions">
                     <button onClick={handleSubmit}>Add</button>
