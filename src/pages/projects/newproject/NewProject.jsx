@@ -1,25 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NewProject.css';
 import {Link, useNavigate} from 'react-router-dom';
-
+import axios from 'axios';
 
 const NewProject = () => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [location, setLocation] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [projectManager, setProjectManager] = useState('');
+    const [departments, setDepartments] = useState([]);
     const [members, setMembers] = useState([]);
-    const [suggestions, setSuggestions] = useState([]);
-    const [state, setState] = useState(''); // Add this
-    const [depId, setDepId] = useState(''); // Add this
-    const [managerId, setManagerId] = useState(''); // Assuming this represents project manager
+    const [selectedDepartments, setSelectedDepartments] = useState([]);
+    const [selectedMembers, setSelectedMembers] = useState([]);
+    // const [selectedManager, setSelectedManager] = useState('');
+    const [managerId, setManagerId] = useState('66c89c4ca55b8e6d57574695'); // Default manager
+    const [projectData, setProjectData] = useState({
+        name: '',
+        description: '',
+        location: '',
+        startDate: '',
+        endDate: ''
+    });
     const navigate = useNavigate();
+    const [location, setLocation] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
 
+    console.log("project data", projectData);
+    // console.log("project data to submit", projectDataToSubmit);
+
+
+      // Fetch all departments on mount
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/department');
+                setDepartments(response.data);
+            } catch (error) {
+                console.error('Error fetching departments:', error);
+            }
+        };
+        fetchDepartments();
+    }, []);
+
+    // Fetch members based on selected departments
+    useEffect(() => {
+        if (selectedDepartments.length > 0) {
+            const fetchMembers = async () => {
+                try {
+                    const response = await axios.post('http://localhost:3000/api/department/members-by-departments', {
+                        departmentIds: selectedDepartments
+                    });
+                    setMembers(response.data);
+                } catch (error) {
+                    console.error('Error fetching members:', error);
+                }
+            };
+
+            fetchMembers();
+        }
+    }, [selectedDepartments]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setProjectData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleDepartmentSelection = (event) => {
+        const { value, checked } = event.target;
+        setSelectedDepartments((prevSelectedDepartments) =>
+          checked
+            ? [...prevSelectedDepartments, value]
+            : prevSelectedDepartments.filter((depId) => depId !== value)
+        );
+      };
+
+        // Handle member selection
+    const handleMemberSelection = (event) => {
+        const { value, checked } = event.target;
+        setSelectedMembers((prevSelectedMembers) =>
+        checked
+            ? [...prevSelectedMembers, value]
+            : prevSelectedMembers.filter((memberId) => memberId !== value)
+        );
+    };
+
+      // Handle manager selection
+    const handleManagerSelection = (event) => {
+        setManagerId(event.target.value);
+    };
 
     const handleInputChange = async (e) => {
         const query = e.target.value;
+        setProjectData(prevData => ({
+            ...prevData,
+            location: query  // Update location inside projectData
+        }));
         setLocation(query);
 
         if (query.length < 3) {
@@ -36,24 +110,37 @@ const NewProject = () => {
         }
     };
 
+    // const handleSuggestionClick = (suggestion) => {
+    //     setProjectData(prevData => ({
+    //         ...prevData,
+    //         location: suggestion.display_name  // Update location inside projectData
+    //     }));
+    //     setSuggestions([]);
+    // };
+
     const handleSuggestionClick = (suggestion) => {
-        setLocation(suggestion.display_name);
+        const selectedLocation = suggestion.display_name;
+        setLocation(selectedLocation);  // Update location state used in input field
+        setProjectData(prevData => ({
+            ...prevData,
+            location: selectedLocation  // Update projectData
+        }));
         setSuggestions([]);
     };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
-        const projectData = {
-            name: name,
-            description: description,
-            location: location,
-            startDate: startDate,
-            endDate: endDate,
+        const projectDataToSubmit = {
+            location, // Include location here
+            ...projectData,
             state: 0,
-            depId: depId || '66c968135c51c93d0dea604e',
-            managerId: managerId || undefined, // Avoid sending empty string
+            depId: selectedDepartments,
+            managerId: managerId || '66c89c4ca55b8e6d57574695',
+            members: selectedMembers
         };
+
+        console.log("project data to submit: ", projectDataToSubmit);
 
 
         // console.log(projectData);
@@ -65,12 +152,13 @@ const NewProject = () => {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify(projectData),
+                body: JSON.stringify(projectDataToSubmit),
             });
 
             if (response.ok) {
                 const createdProject = await response.json();
                 console.log('Project created:', createdProject);
+                navigate('/projects');
                 // Optionally redirect or show success message
             } else {
                 console.error('Failed to create project');
@@ -78,15 +166,29 @@ const NewProject = () => {
         } catch (error) {
             console.error('Error:', error);
         }
-
-        navigate('/projects'); //change accordingly
     };
 
-    function filterFunction() {
-        const input = document.getElementById("searchInput");
+    // function filterFunction() {
+    //     const input = document.getElementById("searchInput");
+    //     const filter = input.value.toUpperCase();
+    //     const dropdown = document.getElementById("dropdownMenu");
+    //     const items = dropdown.getElementsByClassName("manager-drop-item");
+
+    //     for (let i = 0; i < items.length; i++) {
+    //         const label = items[i].getElementsByClassName("user-name")[0];
+    //         if (label.textContent.toUpperCase().indexOf(filter) > -1) {
+    //             items[i].style.display = "";
+    //         } else {
+    //             items[i].style.display = "none";
+    //         }
+    //     }
+    // }
+
+    const filterFunction = (dropdownId) => {
+        const input = document.getElementById(`searchInput-${dropdownId}`);
         const filter = input.value.toUpperCase();
-        const dropdown = document.getElementById("dropdownMenu");
-        const items = dropdown.getElementsByClassName("manager-drop-item");
+        const dropdown = document.getElementById(`dropdownMenu-${dropdownId}`);
+        const items = dropdown.getElementsByClassName("drop-item");
 
         for (let i = 0; i < items.length; i++) {
             const label = items[i].getElementsByClassName("user-name")[0];
@@ -96,8 +198,7 @@ const NewProject = () => {
                 items[i].style.display = "none";
             }
         }
-    }
-
+    };
 
     return (
         <div className="maincon">
@@ -105,25 +206,27 @@ const NewProject = () => {
                 <p className="heading">Create new project</p>
             </div>
 
-            <form className="new-proj-form" noValidate>
+            <form className="new-proj-form" noValidate onSubmit={handleFormSubmit}>
                 <div className="input-component card">
                     <label>Title</label>
-                    <input 
-                        type="text" 
-                        placeholder="Enter project name" 
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required 
+                    <input
+                        type="text"
+                        placeholder="Enter project name"
+                        name="name"
+                        value={projectData.name}
+                        onChange={handleChange}
+                        required
                     />
                 </div>
 
                 <div className="input-component card">
                     <label>Description</label>
-                    <textarea 
-                        placeholder="Enter project description" 
-                        rows={5} 
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                    <textarea
+                        placeholder="Enter project description"
+                        rows={5}
+                        name="description"
+                        value={projectData.description}
+                        onChange={handleChange}
                         required
                     />
                 </div>
@@ -159,8 +262,9 @@ const NewProject = () => {
                         <label>Start Date</label>
                         <input
                             type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
+                            name="startDate"
+                            value={projectData.startDate}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -169,8 +273,9 @@ const NewProject = () => {
                         <label>End Date</label>
                         <input
                             type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
+                            name="endDate"
+                            value={projectData.endDate}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -178,148 +283,80 @@ const NewProject = () => {
 
                 <div className="member-con row ">
                     <div className="sel-manager-con card col">
-                        <label>
-                            Add Departments to this project
-                        </label>
-
-                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
-
-                        <div id="dropdownMenu" className="manager-drop card dropdown-content">
-                            <div className="manager-drop-item" htmlFor="member1">
-                                <input type="radio" id="member1" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-
+                        <label>Add Departments to this project</label>
+                        <input
+                            type="text"
+                            placeholder="Search Departments"
+                            id="searchInput-department"
+                            onKeyUp={() => filterFunction('department')}
+                            required
+                        />
+                        <div id="dropdownMenu-department" className="manager-drop card dropdown-content">
+                            {departments.map((department) => (
+                                <div key={department._id} className="drop-item">
+                                    <input
+                                        type="checkbox"
+                                        value={department._id}
+                                        onChange={handleDepartmentSelection}
+                                        className="member-checkbox"
+                                    />
+                                    <span className="user-name">{department.depName}</span>
+                                </div>
+                            ))}
                         </div>
-
                     </div>
+
                     <div className="sel-manager-con card col">
-                        <label>
-                            Select a Project Manager
-                        </label>
-
-                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
-
-                        <div id="dropdownMenu" className="manager-drop card dropdown-content">
-                            <div className="manager-drop-item" htmlFor="member1">
-                                <input type="radio" id="member1" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="manager-drop-item" htmlFor="member2">
-                                <input type="radio" id="member2" name="projectManager" className="member-checkbox" required/>
-                                <span htmlFor="member2">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">aaaiya Sharma</span>
-                                </span>
-                            </div>
-
+                        <label>Select a Project Manager</label>
+                        <input
+                            type="text"
+                            placeholder="Search members"
+                            id="searchInput-manager"
+                            onKeyUp={() => filterFunction('manager')}
+                            required
+                        />
+                        <div id="dropdownMenu-manager" className="manager-drop card dropdown-content">
+                            {members.map((member) => (
+                                <div key={member._id} className="drop-item">
+                                    <input
+                                        type="radio"
+                                        value={member._id}
+                                        name="projectManager"
+                                        onChange={handleManagerSelection}
+                                        className="member-checkbox"
+                                    />
+                                    <span className="user-name">{member.name}</span>
+                                </div>
+                            ))}
                         </div>
-
                     </div>
-
 
                     <div className="sel-mem-con card col">
-                        <label>
-                            Add members to this Project
-                        </label>
-
-                        <input type="text" placeholder="Search members" id="searchInput" onKeyUp={filterFunction} required/>
-
-                        <div id="dropdownMenu" className="member-drop card dropdown-content">
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-                            <div className="member-drop-item" htmlFor="member1">
-                                <input type="checkbox" id="member1" name="projmembers" className="member-checkbox" required/>
-                                <span htmlFor="member1">
-                                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Image" className="np-user-img" />
-                                    <span className="user-name">Priya Sharma</span>
-                                </span>
-                            </div>
-
-
+                        <label>Add members to this Project</label>
+                        <input
+                            type="text"
+                            placeholder="Search members"
+                            id="searchInput-members"
+                            onKeyUp={() => filterFunction('members')}
+                            required
+                        />
+                        <div id="dropdownMenu-members" className="member-drop card dropdown-content">
+                            {members.map((member) => (
+                                <div key={member._id} className="drop-item">
+                                    <input
+                                        type="checkbox"
+                                        value={member._id}
+                                        onChange={handleMemberSelection}
+                                        className="member-checkbox"
+                                    />
+                                    <span className="user-name">{member.name}</span>
+                                </div>
+                            ))}
                         </div>
-
-
                     </div>
                 </div>
-
-                <button className="creatproj btn btn-primary" onClick={handleFormSubmit}>Create Project</button>
+                <button className="creatproj btn btn-primary" type="submit">Create Project</button>
+                {/* <button className="creatproj btn btn-primary" onClick={handleFormSubmit}>Create Project</button> */}
             </form>
         </div>
     );

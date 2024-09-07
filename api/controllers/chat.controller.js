@@ -1,27 +1,22 @@
 // controllers/chatController.js
-// const Sendbird = require('sendbird');
-import Sendbird from 'sendbird'
-const sb = new Sendbird({ appId: '8FB5D264-B981-4E57-8B58-61FFC8937342' });
+// // const Sendbird = require('sendbird');
+// import Sendbird from 'sendbird'
 import User from '../models/user.model.js';
 import Department from '../models/department.model.js';
 import Project from '../models/project.model.js';
 import { channel } from 'diagnostics_channel';
+import { getSendbirdObject } from '../utils/helper.js';
 
+const sb = getSendbirdObject();
 
-let sendbird_user_connector = (userId) => {
-  // Generate and return Access token from sendbird
-}
 
 export const createProjectChatroom = async (req, res) => {
   const { projectId } = req.body;
   let userIds = []
   try {
-    let connector_user_id = "643712"
     // Fetch project details and populate depId and managerId
     const project = await Project.findById(projectId).populate('depId managerId');
     
-    
-    // console.log(project)
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
@@ -34,16 +29,9 @@ export const createProjectChatroom = async (req, res) => {
     const employeeIds = employees.map(emp => emp._id.toString());
     
     
-    userIds = [...employeeIds]
+    userIds = [...employeeIds, project.managerId.id.toString()]
     
-    if (project.managerId != null)
-    {
-      userIds.push(project.managerId.id);
-      connector_user_id = project.managerId.id.toString();
-    }
-    
-
-    await sb.connect(connector, sendbird_user_connector(connector_user_id), (user, error) => {
+    await sb.connect(project.managerId.id.toString(), (user, error) => {
       if (error) {
         console.error('Connection failed: ', error);
       } else {
@@ -56,7 +44,8 @@ export const createProjectChatroom = async (req, res) => {
     params.name = `${project.name} Project Chat`;  
     params.isDistinct = false;     
     
-    const channel = await sb.GroupChannel.createChannel(params, (channel, error) => {});  // Create the group channel
+
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, null, (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
@@ -84,21 +73,23 @@ export const createDepartmentChatroom = async (req, res) => {
     const employeeIds = employees.map(emp => emp._id.toString());
 
     // Create the chatroom for the department with admin and employees
-    sb.GroupChannel.createChannelWithUserIds(
-      [department.adminId._id.toString(), ...employeeIds],
-      true,
-      departmentId,
-      `${department.depName} Department Chat`,
-      '', // Optionally add cover image URL
-      '', // Optionally add custom data
-      {},
-      (channel, error) => {
-        if (error) {
-          return res.status(500).json({ error: 'Failed to create department chatroom' });
-        }
-        res.status(201).json({ message: 'Department chatroom created successfully', channel });
-      }
-    );
+    // sb.GroupChannel.createChannelWithUserIds(
+    //   [...employeeIds, department.adminId._id.toString()],
+    //   true,
+    //   departmentId,
+    //   `${department.depName} Department Chat`,
+    //   '', // Optionally add cover image URL
+    //   '', // Optionally add custom data
+    //   {},
+    //   (channel, error) => {
+    //     if (error) {
+    //       return res.status(500).json({ error: 'Failed to create department chatroom' });
+    //     }
+    //     res.status(201).json({ message: 'Department chatroom created successfully', channel });
+    //   }
+    // );
+
+    
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
