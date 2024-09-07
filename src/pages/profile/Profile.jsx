@@ -34,6 +34,9 @@ const Profile = () => {
           <button className="discussbtn mainbtn">
             <i className="fa-solid fa-envelope"></i>{user.email}
           </button>
+          <button className="discussbtn mainbtn">
+            <i className="fa-solid fa-building"></i>{user.depId}
+          </button>
 
           <div className="prof-actions">
             <button className="btn btn-primary">Edit</button>
