@@ -18,42 +18,6 @@ export const getProjectDetails = async (req, res, next) => {
     }
 };
 
-// Create a New Project
-// export const createProject = async (req, res, next) => {
-//     try {
-        
-//         if (!req.body.managerId || !mongoose.Types.ObjectId.isValid(req.body.managerId)) {
-//             return next(errorHandler(400, 'Invalid or missing managerId'));
-//         }
-
-//         // Validate depId (ensure it's an array of valid ObjectIds)
-//         if (!req.body.depId || !req.body.depId.every(id => mongoose.Types.ObjectId.isValid(id))) {
-//             return next(errorHandler(400, 'Invalid or missing depId(s)'));
-//         }
-
-//         console.log("in create project");
-//         console.log(req);
-
-
-//         const newProject = new Project({
-//             name: req.body.name,
-//             description: req.body.description,
-//             location: req.body.location || 'Not Available',
-//             startDate: new Date(req.body.startDate), // date format 'YYYY-MM-DD'
-//             endDate: new Date(req.body.endDate), // date format 'YYYY-MM-DD'
-//             state: req.body.state || 0,
-//             depId: req.body.depId,
-//             managerId: req.body.managerId // This should now be validated
-//         });
-
-//         const savedProject = await newProject.save();
-
-//         res.status(201).json(savedProject);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 export const createProject = async (req, res, next) => {
     try {
         const { name, description, location, startDate, endDate, depId, managerId } = req.body;
