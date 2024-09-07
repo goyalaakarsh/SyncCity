@@ -2,7 +2,8 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
-
+import { getSendbirdObject } from '../utils/helper.js';
+import SendBird from 'sendbird';
 export const test = (req, res) => {
     res.json({
         message: 'API route is working',
@@ -16,6 +17,12 @@ export const signup = async (req, res, next) => {
     
     try {
         await newUser.save();
+        const sb = getSendbirdObject();
+        await sb.connect(newUser.id.toString());   
+         
+        const nickname = newUser.name
+        const user = await sb.updateCurrentUserInfo(nickname, null, (resonse, error) => {});
+
         res.status(201).json("User created successfully");
     } catch (error) {
         next(error);
