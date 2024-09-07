@@ -48,7 +48,7 @@ export const createProjectChatroom = async (req, res) => {
 
     
 
-    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, "Project", (channel, error) => {});  // Create the group channel
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} : Project`,null, null, "Project", (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
@@ -89,7 +89,7 @@ export const createDepartmentChatroom = async (req, res) => {
     userIds = [department.adminId.id.toString(), ...employeeIds]
 
 
-    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${department.depName} Department Chat`,null, null, "Department", (channel, error) => {});  // Create the group channel
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${department.depName} : Department`,null, null, "Department", (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
