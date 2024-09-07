@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
+import { log } from "console";
 
 export const getAdmins = async (req, res, next) => {
     console.log("Fetching admins...");
@@ -11,6 +12,27 @@ export const getAdmins = async (req, res, next) => {
     } catch (error) {
         console.error("Error fetching admins:", error);
       next(error);
+    }
+};
+
+export const assignProjectToUsers = async (req, res, next) => {
+    const { projectId, userIds } = req.body; // userIds is an array of user IDs, including the manager
+
+    try {
+        if (!projectId || !userIds || !Array.isArray(userIds)) {
+            return next(errorHandler(400, "Invalid request data"));
+        }
+
+        // Loop through the userIds and update each user's projectId array
+        const updatedUsers = await User.updateMany(
+            { _id: { $in: userIds } }, // Select users whose IDs are in the userIds array
+            { $addToSet: { projectId: projectId } }, // Add the projectId to their projectId array
+            { new: true }
+        );
+
+        res.status(200).json({ message: "Users successfully updated with projectId", updatedUsers });
+    } catch (error) {
+        next(error);
     }
 };
 
@@ -51,7 +73,7 @@ export const deleteUser = async (req, res, next) => {
     }    
 };
 
-export const getUser = async (req, res, next) => {
+export const getUserWithId = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
     
@@ -64,3 +86,13 @@ export const getUser = async (req, res, next) => {
     }
 }
 
+
+export const getUser = (req, res, next) => {
+    try{
+        console.log(req.user);
+        
+        res.status(200).json(req.user);
+    }catch(error) {
+        next(error)
+    }
+}

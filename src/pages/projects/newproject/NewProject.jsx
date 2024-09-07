@@ -110,14 +110,6 @@ const NewProject = () => {
         }
     };
 
-    // const handleSuggestionClick = (suggestion) => {
-    //     setProjectData(prevData => ({
-    //         ...prevData,
-    //         location: suggestion.display_name  // Update location inside projectData
-    //     }));
-    //     setSuggestions([]);
-    // };
-
     const handleSuggestionClick = (suggestion) => {
         const selectedLocation = suggestion.display_name;
         setLocation(selectedLocation);  // Update location state used in input field
@@ -142,9 +134,6 @@ const NewProject = () => {
 
         console.log("project data to submit: ", projectDataToSubmit);
 
-
-        // console.log(projectData);
-
         try {
             const response = await fetch('http://localhost:3000/api/project/create', {
                 method: 'POST',
@@ -158,7 +147,22 @@ const NewProject = () => {
             if (response.ok) {
                 const createdProject = await response.json();
                 console.log('Project created:', createdProject);
-                navigate('/projects');
+
+                // After the project is created, update the projectId array for manager and members
+                const projectId = createdProject._id; // Assuming the created project ID is in the response
+
+                // Combine the selected members and manager ID into one array
+                const usersToUpdate = [...selectedMembers, managerId];
+
+                // Make a separate request to update the projectId array for the selected users
+                await axios.post('http://localhost:3000/api/user/assignProject', {
+                    projectId: projectId,
+                    userIds: usersToUpdate
+                }, { withCredentials: true });
+
+                console.log('Users successfully updated with project ID');
+                
+                navigate('/projects'); // Optionally redirect or show success message
                 // Optionally redirect or show success message
             } else {
                 console.error('Failed to create project');
@@ -167,22 +171,6 @@ const NewProject = () => {
             console.error('Error:', error);
         }
     };
-
-    // function filterFunction() {
-    //     const input = document.getElementById("searchInput");
-    //     const filter = input.value.toUpperCase();
-    //     const dropdown = document.getElementById("dropdownMenu");
-    //     const items = dropdown.getElementsByClassName("manager-drop-item");
-
-    //     for (let i = 0; i < items.length; i++) {
-    //         const label = items[i].getElementsByClassName("user-name")[0];
-    //         if (label.textContent.toUpperCase().indexOf(filter) > -1) {
-    //             items[i].style.display = "";
-    //         } else {
-    //             items[i].style.display = "none";
-    //         }
-    //     }
-    // }
 
     const filterFunction = (dropdownId) => {
         const input = document.getElementById(`searchInput-${dropdownId}`);

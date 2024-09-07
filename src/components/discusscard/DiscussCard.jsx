@@ -1,10 +1,9 @@
-import React from 'react'
-import './DiscussCard.css'
+import React from 'react';
+import './DiscussCard.css';
 
-export const DiscussCard = () => {
+export const DiscussCard = ({ channel, onClick }) => {
     return (
-        <div className="discuss-card card">
-
+        <div className="discuss-card card" onClick={() => onClick(channel.channel_url)}>
             <div className="discusscard-pfp">
                 <img
                     className='discuss-pfp'
@@ -13,13 +12,10 @@ export const DiscussCard = () => {
                 />
             </div>
 
-
             <div className="discusscard-name">
-                <h6 className='discuss-name'>Name</h6>
-                <span className="b-tag">One-to-One</span>
+                <h6 className='discuss-name'>{channel.name}</h6> {/* Display the channel name */}
+                {/* <span className="b-tag">{channel.isGroupChannel() ? 'Group' : 'One-to-One'}</span> Display channel type */}
             </div>
-
-
         </div>
-    )
-}
+    );
+};
