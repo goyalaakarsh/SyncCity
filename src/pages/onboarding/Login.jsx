@@ -60,6 +60,8 @@ const Login = () => {
       setLoading(false);
       if (data.role === 0) {
         navigate('/root');
+      } else if (!data.depId) {
+        navigate('/join');
       } else {
         navigate('/dashboard');
       }

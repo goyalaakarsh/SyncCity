@@ -44,7 +44,11 @@ export default function OAuth() {
         
               dispatch({ type: 'LOGIN', payload: normalizedUserData });
         
+            if (!data.depId) {
+            navigate('/join');
+            } else {
             navigate('/dashboard');
+            }
         } catch (error) {
             console.log('Unable to continue with Google', error);
         }
