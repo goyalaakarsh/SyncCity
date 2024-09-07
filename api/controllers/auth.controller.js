@@ -1,13 +1,15 @@
+import Sendbird from 'sendbird';
 import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import { getSendbirdObject } from '../utils/helper.js';
 
 export const test = (req, res) => {
     res.json({
         message: 'API route is working',
     });
-};
+}
 
 export const signup = async (req, res, next) => {
     const {name, email, password, role, projectId, depId} = req.body;
@@ -16,6 +18,39 @@ export const signup = async (req, res, next) => {
     
     try {
         await newUser.save();
+
+        const sb = getSendbirdObject();
+        const sbuser = await sb.connect(newUser._id.toString());
+        
+        console.log(sbuser);
+        
+        // await sb.updateCurrentUserInfo({
+        //     nickname: newUser.name  // Set nickname to the user's name
+        // }, (response, error) => {
+        //     if (error) {
+        //         console.error('Error updating user info:', error);
+        //         return;
+        //     }
+        //     console.log('User info updated successfully', response);
+        // });
+
+        // Once connected, update the user info (nickname in this case)
+        // await new Promise((resolve, reject) => {
+        //     sb.updateCurrentUserInfo({
+        //         nickname: name  // Set the nickname to the user's name
+        //     }, (response, error) => {
+        //         if (error) {
+        //             console.error('Error updating user info on Sendbird:', error);
+        //             return reject(error);  // Reject the promise if there's an error
+        //         }
+        //         console.log('User info updated successfully:', response);
+        //         resolve(response);  // Resolve the promise once successful
+        //     });
+        // });
+
+        // PUT https://api-{application_id}.sendbird.com/v3/users/{user_id}
+
+
         res.status(201).json("User created successfully");
     } catch (error) {
         next(error);
