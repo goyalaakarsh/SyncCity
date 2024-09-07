@@ -1,12 +1,13 @@
 // controllers/chatController.js
-// const Sendbird = require('sendbird');
-import Sendbird from 'sendbird'
-const sb = new Sendbird({ appId: '8FB5D264-B981-4E57-8B58-61FFC8937342' });
+// // const Sendbird = require('sendbird');
+// import Sendbird from 'sendbird'
 import User from '../models/user.model.js';
 import Department from '../models/department.model.js';
 import Project from '../models/project.model.js';
 import { channel } from 'diagnostics_channel';
+import { getSendbirdObject } from '../routes/helper.js';
 
+const sb = getSendbirdObject();
 
 
 export const createProjectChatroom = async (req, res) => {
