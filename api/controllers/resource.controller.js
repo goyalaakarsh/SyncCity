@@ -70,3 +70,24 @@ export const reduceResource = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const getSpecificResources = async (req, res) => {
+    try {
+        const { resources } = req.body;
+        const resourceNames = resources.map(r => r.name);
+        
+        const foundResources = await Resource.find({ name: { $in: resourceNames } });
+        
+        const result = foundResources.map(resource => {
+            const requestedResource = resources.find(r => r.name === resource.name);
+            return {
+                ...resource.toObject(),
+                requestedQuantity: requestedResource ? requestedResource.quantity : 0
+            };
+        });
+
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching specific resources', error: error.message });
+    }
+};
