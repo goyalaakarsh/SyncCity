@@ -49,13 +49,13 @@ const Navbar = () => {
                 >
                     Departments
                 </NavLink> */}
-                <NavLink
+                {/* <NavLink
                     className="navbar_link"
                     to="/share-data"
                     activeclassname="active"
                 >
                     Share Data
-                </NavLink>
+                </NavLink> */}
             </div>
 
             <div className="navbar_icons">

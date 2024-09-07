@@ -15,7 +15,7 @@ import NewDepart from './pages/departments/newdepart/NewDepart';
 import Discussions from './pages/discussions/Discussions';
 import ShareData from './pages/sharedata/ShareData';
 import Notifications from './pages/notifications/Notifications';
-import NewEvent from './pages/newevent/NewEvent';
+import NewEvent from './pages/events/newevent/NewEvent';
 import Profile from './pages/profile/Profile';
 import Root from './pages/root/Root';
 import Join from './pages/onboarding/Join';

@@ -56,11 +56,18 @@ const Dashboard = () => {
       legend: {
         display: true,
         position: 'top',
+        labels: {
+          color: 'white',
+          font: {
+            family: 'Poppins', // Font family
+            size: 14, // Font size
+          }, // Legend text color
+        },
       },
-      title: {
-        display: true,
-        text: 'Project Employee Count',
-      },
+      // title: {
+      //   display: true,
+      //   text: 'Project Employee Count',
+      // },
     },
   };
 
@@ -107,6 +114,13 @@ const Dashboard = () => {
     plugins: {
       legend: {
         position: 'right',
+        labels: {
+          color: 'white', 
+          font: {
+            family: 'Poppins', // Font family
+            size: 14, // Font size
+          },// Legend text color
+        },
       },
       tooltip: {
         callbacks: {
@@ -222,11 +236,18 @@ const Dashboard = () => {
       plugins: {
         legend: {
           position: 'top',
+          labels: {
+            color: 'white',
+            font: {
+              family: 'Poppins', // Font family
+              size: 14, // Font size
+            }, // Legend text color
+          },
         },
-        title: {
-          display: true,
-          text: 'Project Tasks: Completed vs In Progress',
-        },
+        // title: {
+        //   display: true,
+        //   text: 'Project Tasks: Completed vs In Progress',
+        // },
       },
     };
   
@@ -321,11 +342,18 @@ const Dashboard = () => {
       },
       legend: {
         display: false,
+        labels: {
+          color: 'white', 
+          font: {
+            family: 'Poppins', // Font family
+            size: 14, // Font size
+          },// Legend text color
+        },
       },
-      title: {
-        display: true,
-        text: 'Project Timelines',
-      },
+      // title: {
+      //   display: true,
+      //   text: 'Project Timelines',
+      // },
     },
   };
 
