@@ -1,6 +1,7 @@
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model.js';
+import { log } from "console";
 
 export const getAdmins = async (req, res, next) => {
     console.log("Fetching admins...");
@@ -72,7 +73,7 @@ export const deleteUser = async (req, res, next) => {
     }    
 };
 
-export const getUser = async (req, res, next) => {
+export const getUserWithId = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
     
@@ -85,3 +86,13 @@ export const getUser = async (req, res, next) => {
     }
 }
 
+
+export const getUser = (req, res, next) => {
+    try{
+        console.log(req.user);
+        
+        res.status(200).json(req.user);
+    }catch(error) {
+        next(error)
+    }
+}

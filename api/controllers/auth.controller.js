@@ -1,3 +1,4 @@
+import Sendbird from 'sendbird';
 import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import {errorHandler} from '../utils/error.js';
@@ -8,7 +9,7 @@ export const test = (req, res) => {
     res.json({
         message: 'API route is working',
     });
-};
+}
 
 export const signup = async (req, res, next) => {
     const {name, email, password, role, projectId, depId} = req.body;

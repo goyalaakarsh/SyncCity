@@ -1,0 +1,68 @@
+.chat-modal {
+    position: fixed;
+    bottom: 80px; /* Adjust this value to position the modal above the icon */
+    right: 20px;
+    width: 30rem;
+    max-height: 400px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+  }
+  
+  .chat-header {
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .message {
+    margin: 5px 0;
+  }
+  
+  .message.user {
+    text-align: right;
+  }
+  
+  .message.bot {
+    text-align: left;
+  }
+  
+  .chat-footer {
+    background: #f1f1f1;
+    padding: 10px;
+    display: flex;
+  }
+  
+  .chat-footer input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .chat-footer button {
+    padding: 10px;
+    margin-left: 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

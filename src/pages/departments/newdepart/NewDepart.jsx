@@ -88,6 +88,24 @@ const NewDepart = () => {
             if (!res.ok) {
                 throw new Error(data.message || 'Failed to create department');
             }
+            
+            // console.log(data)
+            const department_room_obj = await fetch('http://localhost:3000/api/chat/create-department-room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify(
+                    {departmentId: data._id})
+            });
+
+            const department_room_data = await department_room_obj.json();
+
+            if (!department_room_obj.ok)
+            {
+                throw new Error(department_room_data.message || 'Failed to create Room');
+            }
     
             setLoading(false);
             setError(null);
