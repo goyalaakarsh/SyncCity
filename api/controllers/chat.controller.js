@@ -48,7 +48,7 @@ export const createProjectChatroom = async (req, res) => {
 
     
 
-    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} : Project`,null, null, "Project", (channel, error) => {});  // Create the group channel
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} : Project`,null, `{'id':'${projectId}'}` , "Project", (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
@@ -88,14 +88,29 @@ export const createDepartmentChatroom = async (req, res) => {
     
     userIds = [department.adminId.id.toString(), ...employeeIds]
 
+    const data = {
+      user_ids: userIds,
+      is_distinct: false,
+      name: `${department.depName} : Department`,
+      data: `{'id':'${departmentId}'}`,
+      custom_type: 'Department',
+      is_public: true,
+    };
 
-    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${department.depName} : Department`,null, null, "Department", (channel, error) => {});  // Create the group channel
+    
+    const response = await axios.post(
+      `https://api-${APPLICATION_ID}.sendbird.com/v3/group_channels`,
+      data,
+      {
+        headers: {
+          'Api-Token': API_TOKEN,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    res.status(201).json({
-      "status":"Channel Created",
-      "group_name":channel.name,
-      "group_url":channel.url    
-    })
+
+    return res.status(201).json(response.data)
 
     
   } catch (error) {
@@ -274,3 +289,90 @@ export const checkAndAddToDepartmentChat = async (user) => {
       console.error('Error checking and adding user to department chat:', error);
     }
 };
+
+
+export const findAndJoinGroupChannel = async (req, res) => {
+  
+  const USER_ID = req.body.USER_ID;
+  const GROUP_TYPE_ID = req.body.GROUP_TYPE_ID;
+  let matchingChannel = null;
+  try {
+    // Step 1: Fetch all group channels
+    const response = await axios.get(
+      `https://api-${APPLICATION_ID}.sendbird.com/v3/group_channels`,
+      {
+        headers: {
+          'Api-Token': API_TOKEN,
+        },
+        params: {
+          show_empty: true,  // Include empty channels as well
+          limit: 100,  // Adjust the limit if needed
+        }
+      }
+    );
+
+    const groupChannels = response.data.channels;
+
+    // Step 2: Search for the channel with the matching departmentId in the 'data' field
+    
+    // const matchingChannel = groupChannels.find(channel => {
+    //   const data = channel.data ? JSON.parse(channel.data) : {};
+    //   return data.id === GROUP_TYPE_ID;
+    // });
+
+    for (let i = 0; i < groupChannels.length; i++) {
+      const channel = groupChannels[i];
+      
+      // Check if channel has data
+      if (channel.data) {
+        // Manually handle the single-quote issue in the data
+        const dataString = channel.data.replace(/'/g, '"'); // Replace single quotes with double quotes
+        
+        // Extract the id from the data string manually (without parsing JSON)
+        const match = dataString.match(/"id":"([^"]+)"/); // Match id using a regex
+        if (match && match[1] === GROUP_TYPE_ID) {
+          matchingChannel = channel;
+          break; // Exit the loop if a match is found
+        }
+      }
+    }
+    
+    if (matchingChannel) {
+      console.log(`Found matching channel: ${matchingChannel.channel_url}`);
+
+      // Step 3: Send a join request for the user to the found channel
+      await joinChannel(USER_ID, matchingChannel.channel_url);
+      return res.status(200).json({ message: `User ${USER_ID} successfully joined the channel` });
+    } else {
+      console.log(`No matching group channel found for departmentId: ${GROUP_TYPE_ID}`);
+      return res.status(404).json({ error: `No matching group channel found for GROUP_TYPE_ID: ${GROUP_TYPE_ID}` });
+
+    }
+  } catch (error) {
+    console.error('Error fetching group channels:', error);
+    return res.status(404).json({ error: `No matching group channel found for GROUP_TYPE_ID: ${GROUP_TYPE_ID}` });
+
+  }
+};
+
+// Function to send join request
+const joinChannel = async (USER_ID, channelUrl) => {
+  try {
+    console.log(USER_ID, channelUrl)
+    const response = await axios.put(
+      `https://api-${APPLICATION_ID}.sendbird.com/v3/group_channels/${channelUrl}/join`,
+      { user_id: USER_ID },
+      {
+        headers: {
+          'Api-Token': API_TOKEN,
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+
+    console.log(`User ${USER_ID} successfully joined the channel:`, response.data);
+  } catch (error) {
+    console.error('Error joining the channel:', error);
+  }
+};
+
