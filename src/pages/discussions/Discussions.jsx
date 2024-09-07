@@ -23,13 +23,14 @@ const Discussions = () => {
         const response = await axios.get('http://localhost:3000/api/user', {
           withCredentials: true,
         }); // Adjust endpoint to your backend
-        const user = response.data; // Assuming the user object is in the response data
-
-        console.log(user);
+        const fetchedUser = response.data; // Assuming the user object is in the response data
+        setUser(fetchedUser);
+      
+        console.log(fetchedUser);
         
         
         // Now connect the user to SendBird using userId from the fetched user object
-        sb.connect(user.id, (sendbirdUser, error) => {
+        sb.connect(fetchedUser.id, (sendbirdUser, error) => {
           if (error) {
             console.error('Failed to connect:', error);
             return;
@@ -41,19 +42,39 @@ const Discussions = () => {
       }
     };
   
-    fetchUserData(); // Fetch user data and connect to Sendbird
+    // fetchUserData(); // Fetch user data and connect to Sendbird
   
     // Fetch channels from your backend
     const fetchChannels = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/chat/get-channels'); // Replace with your backend API
-        setChannels(response.data['Group Channels']['channels']); // Assuming the API returns channels in data
+        const response = await axios.get('http://localhost:3000/api/chat/get-channels', {
+          withCredentials: true,
+        }); // Replace with your backend API
+        // setChannels(response.data['Group Channels']['channels']); // Assuming the API returns channels in data
+        const fetchedChannels = response.data['Group Channels']['channels'];
+        // console.log("Relevant Channels have been set");
+
+        setChannels(fetchedChannels);
+        console.log('Channels fetched:', fetchedChannels);
+
+        console.log(channels);
+
+        
       } catch (error) {
         console.error('Error fetching channels from backend:', error);
-      }
+      } 
+    };  
+    // fetchChannels(); // Fetch the channels when the component loads
+
+    // Call both fetch functions
+    const initializeData = async () => {
+      await fetchUserData();  // Ensure user data is fetched and connected
+      await fetchChannels();  // Ensure channels are fetched after the user connects
     };
-  
-    fetchChannels(); // Fetch the channels when the component loads
+
+    initializeData(); // Run initialization function
+
+
   }, []);
   
 
