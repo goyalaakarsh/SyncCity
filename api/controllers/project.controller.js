@@ -147,3 +147,26 @@ export const getProjectTasks = async (req, res, next) => {
     }
 
 }
+
+// Controller function to get all projects with their locations
+export const getAllProjectLocations = async (req, res) => {
+    try {
+        const projects = await Project.find({
+            location: { $ne: null }, // Ensure location is not null
+            startDate: { $ne: null }, // Ensure startDate is not null
+            endDate: { $ne: null }    // Ensure endDate is not null
+        }).select('name location startDate endDate _id'); // Select only relevant fields
+
+        const projectLocations = projects.map(project => ({
+            id: project._id,
+            name: project.name,
+            location: project.location,
+            startDate: project.startDate,
+            endDate: project.endDate
+        }));
+
+        res.json(projectLocations);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
