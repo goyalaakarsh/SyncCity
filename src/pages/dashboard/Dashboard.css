@@ -2,3 +2,11 @@
     width: 40rem;
     height: 20rem;
 }
+
+.charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-around;
+    margin-top: 1rem;
+}

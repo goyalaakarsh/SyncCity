@@ -127,7 +127,7 @@ export const deleteDepartment = async (req, res, next) => {
         }
 
         const department = await Department.findById(req.params.id);
-        console.log(department);
+        // console.log(department);
 
         if(!department) return next(errorHandler(404, "Department not found"));
         const dName = department.depName;
