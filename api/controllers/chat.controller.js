@@ -46,13 +46,9 @@ export const createProjectChatroom = async (req, res) => {
       }
     });
 
-    const params = new sb.GroupChannelParams(); 
-    params.invitedUserIds = userIds;            
-    params.name = `${project.name} Project Chat`;  
-    params.isDistinct = false;     
     
 
-    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, null, (channel, error) => {});  // Create the group channel
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${project.name} Project Chat`,null, null, "Project", (channel, error) => {});  // Create the group channel
 
     res.status(201).json({
       "status":"Channel Created",
@@ -67,6 +63,7 @@ export const createProjectChatroom = async (req, res) => {
 
 export const createDepartmentChatroom = async (req, res) => {
   const { departmentId } = req.body;
+  let userIds = null;
   
   try {
     // Fetch department details and populate adminId
@@ -74,31 +71,35 @@ export const createDepartmentChatroom = async (req, res) => {
     if (!department) {
       return res.status(404).json({ error: 'Department not found' });
     }
+    
 
     // Get all employees in the department
     const employees = await User.find({ depId: departmentId });
     const employeeIds = employees.map(emp => emp._id.toString());
+    
 
-    // Create the chatroom for the department with admin and employees
-    // sb.GroupChannel.createChannelWithUserIds(
-    //   [...employeeIds, department.adminId._id.toString()],
-    //   true,
-    //   departmentId,
-    //   `${department.depName} Department Chat`,
-    //   '', // Optionally add cover image URL
-    //   '', // Optionally add custom data
-    //   {},
-    //   (channel, error) => {
-    //     if (error) {
-    //       return res.status(500).json({ error: 'Failed to create department chatroom' });
-    //     }
-    //     res.status(201).json({ message: 'Department chatroom created successfully', channel });
-    //   }
-    // );
+    await sb.connect(department.adminId.id.toString(), (user, error) => {
+      if (error) {
+        console.error('Connection failed: ', error);
+      } else {
+        console.log('Connected as: ', user.nickname);
+      }
+    });
+    
+    userIds = [department.adminId.id.toString(), ...employeeIds]
+
+
+    const channel = await sb.GroupChannel.createChannelWithUserIds(userIds, false,`${department.depName} Department Chat`,null, null, "Department", (channel, error) => {});  // Create the group channel
+
+    res.status(201).json({
+      "status":"Channel Created",
+      "group_name":channel.name,
+      "group_url":channel.url    
+    })
 
     
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: error });
   }
 };
 
