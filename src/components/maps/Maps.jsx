@@ -5,7 +5,7 @@ import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import './Maps.css'; // Ensure this file has appropriate styles
 
 // Ensure to replace this with your actual Mapbox access token
-const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoibWFuYXYyMTM5IiwiYSI6ImNtMHJ3aHJ1bTBjazIybHI0ajE1bmI0NnMifQ.y2ScM_hB01_aDQ_7gKY10g'; // Replace with your actual token
+const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoibWFuYXYyMTM5IiwiYSI6ImNtMHNwNDV3bTBteTQyaXM1NzdubHJ6NXMifQ.fOEo3EWQXRxgGFV2ewz0eg'; // Replace with your actual token
 
 const MapComponent = ({ location, projectName }) => {
   const [longitude, setLongitude] = useState(null);

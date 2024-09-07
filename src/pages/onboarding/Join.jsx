@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../UserContext'; // Adjust path as necessary
-
+import axios from 'axios';
 
 const Join = () => {
   const [formData, setFormData] = useState({});
@@ -31,7 +31,7 @@ const Join = () => {
         body: JSON.stringify(formData),
         credentials: 'include',  // Make sure cookies are sent with the request
       });
-
+      
       const data = await res.json();
       console.log(data);
 
@@ -41,11 +41,26 @@ const Join = () => {
 
       const { user } = data;
 
+      // console.log(data);
       if (user && user.depId) {
         // Update user depId in context
         dispatch({
           type: 'UPDATE_USER',
           payload: { depId: user.depId }
+        });
+        
+        await fetch('http://localhost:3000/api/chat/join-channel', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(
+            {
+              GROUP_TYPE_ID: user.depId,
+              USER_ID: user._id
+            }
+          ),
+          credentials: 'include',  // Make sure cookies are sent with the request
         });
   
         console.log('Dispatched depId:', user.depId);  // Now this should log the correct depId
