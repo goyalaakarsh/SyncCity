@@ -5,7 +5,7 @@ import User from '../models/user.model.js';
 import Department from '../models/department.model.js';
 import Project from '../models/project.model.js';
 import { channel } from 'diagnostics_channel';
-import { getSendbirdObject } from '../routes/helper.js';
+import { getSendbirdObject } from '../utils/helper.js';
 
 const sb = getSendbirdObject();
 
