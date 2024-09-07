@@ -8,20 +8,14 @@ import Project from '../models/project.model.js';
 import { channel } from 'diagnostics_channel';
 
 
-let sendbird_user_connector = (userId) => {
-  // Generate and return Access token from sendbird
-}
 
 export const createProjectChatroom = async (req, res) => {
   const { projectId } = req.body;
   let userIds = []
   try {
-    let connector_user_id = "643712"
     // Fetch project details and populate depId and managerId
     const project = await Project.findById(projectId).populate('depId managerId');
     
-    
-    // console.log(project)
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
@@ -34,16 +28,9 @@ export const createProjectChatroom = async (req, res) => {
     const employeeIds = employees.map(emp => emp._id.toString());
     
     
-    userIds = [...employeeIds]
+    userIds = [...employeeIds, project.managerId.id.toString()]
     
-    if (project.managerId != null)
-    {
-      userIds.push(project.managerId.id);
-      connector_user_id = project.managerId.id.toString();
-    }
-    
-
-    await sb.connect(connector, sendbird_user_connector(connector_user_id), (user, error) => {
+    await sb.connect(project.managerId.id.toString(), (user, error) => {
       if (error) {
         console.error('Connection failed: ', error);
       } else {
@@ -84,21 +71,23 @@ export const createDepartmentChatroom = async (req, res) => {
     const employeeIds = employees.map(emp => emp._id.toString());
 
     // Create the chatroom for the department with admin and employees
-    sb.GroupChannel.createChannelWithUserIds(
-      [department.adminId._id.toString(), ...employeeIds],
-      true,
-      departmentId,
-      `${department.depName} Department Chat`,
-      '', // Optionally add cover image URL
-      '', // Optionally add custom data
-      {},
-      (channel, error) => {
-        if (error) {
-          return res.status(500).json({ error: 'Failed to create department chatroom' });
-        }
-        res.status(201).json({ message: 'Department chatroom created successfully', channel });
-      }
-    );
+    // sb.GroupChannel.createChannelWithUserIds(
+    //   [...employeeIds, department.adminId._id.toString()],
+    //   true,
+    //   departmentId,
+    //   `${department.depName} Department Chat`,
+    //   '', // Optionally add cover image URL
+    //   '', // Optionally add custom data
+    //   {},
+    //   (channel, error) => {
+    //     if (error) {
+    //       return res.status(500).json({ error: 'Failed to create department chatroom' });
+    //     }
+    //     res.status(201).json({ message: 'Department chatroom created successfully', channel });
+    //   }
+    // );
+
+    
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
