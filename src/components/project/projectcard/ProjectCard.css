@@ -38,6 +38,9 @@
 
 .projinfo-item span {
     font-size: 0.8rem;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .projtask-head {

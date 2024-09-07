@@ -42,13 +42,13 @@ const Navbar = () => {
                 >
                     Events
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                     className="navbar_link"
-                    to="/departments"
+                    to="/root"
                     activeclassname="active"
                 >
                     Departments
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                     className="navbar_link"
                     to="/share-data"

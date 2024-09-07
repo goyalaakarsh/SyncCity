@@ -22,6 +22,7 @@ import Join from './pages/onboarding/Join';
 import DepartDeets from './components/department/departdeets/DepartDeets';
 import EditDepart from './pages/departments/editdepart/EditDepart';
 import { useUser } from './UserContext';
+import Inventory from './pages/inventory/Inventory';
 
 
 const AppRoutes = () => {
@@ -66,6 +67,7 @@ const AppLayout = () => {
             <Route path="/join" element={<Join />} /> {/* Ensure this matches your backend route */}
             <Route path="/departments/update/:id" element={<EditDepart />} />
             <Route path="/departments/:id" element={<DepartDeets />} />
+            <Route path="/inventory" element={<Inventory />} />
           </Routes>
         </main>
       </>
