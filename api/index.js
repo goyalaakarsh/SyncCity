@@ -15,10 +15,6 @@ import notificationRouter from './routes/notification.route.js';
 
 import cors from 'cors';
 
-// import ReactDOM from 'react-dom';
-// import AppRoutes from './Routes'
-
-
 
 dotenv.config();
 mongoose.connect(process.env.MONGO).then(() => {
@@ -35,7 +31,7 @@ app.use(cookieParser());
 
 app.use(cors({
     origin: ' http://localhost:5173',  // Replace with your frontend's URL
-    methods: 'GET,POST,PUT,DELETE',
+    methods: 'GET,POST,PUT,DELETE,PATCH',
     credentials: true,  // Allow cookies or authentication to be passed along
 }));
 
