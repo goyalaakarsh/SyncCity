@@ -159,9 +159,12 @@ const NewProject = () => {
                     projectId: projectId,
                     userIds: usersToUpdate
                 }, { withCredentials: true });
-
-                console.log('Users successfully updated with project ID');
+                console.log('Users successfully updated with project ID, now attempting chat room creatino.');
                 
+                await axios.post('http://localhost:3000/api/chat/create-project-room', {
+                    projectId: projectId,
+                });
+
                 navigate('/projects'); // Optionally redirect or show success message
                 // Optionally redirect or show success message
             } else {
@@ -343,6 +346,7 @@ const NewProject = () => {
                         </div>
                     </div>
                 </div>
+                
                 <button className="creatproj btn btn-primary" type="submit">Create Project</button>
                 {/* <button className="creatproj btn btn-primary" onClick={handleFormSubmit}>Create Project</button> */}
             </form>

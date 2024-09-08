@@ -1,0 +1,8 @@
+.inventorycon {
+    max-width: 70rem;
+    margin: auto;
+}
+
+.inventory-list input {
+    width: 100%;
+}

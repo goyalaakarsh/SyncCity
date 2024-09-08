@@ -38,7 +38,7 @@ const ChatModal = ({ onClose }) => {
   return (
     <div className="chat-modal">
       <div className="chat-header">
-        <h5>Chat with us!</h5>
+        <h5>Ask Syncity</h5>
         <button className='chatmod-close' onClick={onClose}><i className="fa-solid fa-x"></i></button>
       </div>
       <div className="chat-body">

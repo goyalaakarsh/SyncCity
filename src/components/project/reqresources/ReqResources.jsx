@@ -1,78 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './ReqResources.css';
 
 const ReqResources = ({ isVisible, onClose, onSave }) => {
-    if (!isVisible) return null;
-
-    // Dummy inventory list (machinery and human resources)
-    const inventory = [
-        { id: 1, name: 'Excavator (Machinery)' },
-        { id: 2, name: 'Bulldozer (Machinery)' },
-        { id: 3, name: 'Crane Operator (Human Resource)' },
-        { id: 4, name: 'Electrician (Human Resource)' },
-        { id: 5, name: 'Concrete Mixer (Machinery)' },
-        { id: 6, name: 'Plumber (Human Resource)' }
-    ];
-
-    const [selectedResources, setSelectedResources] = useState(
-        inventory.map(item => ({ ...item, isSelected: false, quantity: '1' }))
-    );
-
+    const [inventory, setInventory] = useState([]);
+    const [selectedResources, setSelectedResources] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
 
-    const handleResourceChange = (id, key, value) => {
-        setSelectedResources(prevResources =>
-            prevResources.map(res =>
-                res.id === id ? { ...res, [key]: value } : res
-            )
-        );
+    useEffect(() => {
+        const fetchResources = async () => {
+            try {
+                const response = await axios.get('http://localhost:3000/api/resource');
+                setInventory(response.data);
+            } catch (error) {
+                console.error('Error fetching resources:', error);
+            }
+        };
+
+        fetchResources();
+    }, []);
+
+    if (!isVisible) return null;
+
+    const handleResourceChange = (id, isSelected) => {
+        setSelectedResources(prev => {
+            if (isSelected) {
+                return { ...prev, [id]: { quantity: 1 } };
+            } else {
+                const { [id]: _, ...rest } = prev;
+                return rest;
+            }
+        });
     };
 
-    const handleSubmit = () => {
-        const requestedResources = selectedResources.filter(res => res.isSelected && res.quantity);
-        onSave(requestedResources);
+    const handleQuantityChange = (id, quantity) => {
+        setSelectedResources(prev => ({
+            ...prev,
+            [id]: { ...prev[id], quantity: parseInt(quantity) || 1 }
+        }));
     };
 
-    const filteredResources = selectedResources.filter(resource =>
+    const handleSubmit = async () => {
+        const requestedResources = Object.entries(selectedResources)
+            .map(([id, { quantity }]) => {
+                const resource = inventory.find(item => item._id === id);
+                if (!resource) {
+                    console.error(`Resource with id ${id} not found in inventory`);
+                    return null;
+                }
+                return { id, name: resource.name, quantity };
+            })
+            .filter(Boolean);
+
+        console.log("Requested resources", requestedResources);
+
+        try {
+            const response = await axios.post('http://localhost:3000/api/resource/specific', { resources: requestedResources });
+            console.log("Response resources", response);
+
+            onSave(response.data);
+        } catch (error) {
+            console.error('Error sending resource request:', error);
+        }
+    };
+
+    const filteredResources = inventory.filter(resource =>
         resource.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
-        <div className="maincon req-resources-overlay">
+        <div className="req-resources-overlay">
             <div className="req-resources-content">
-                <h3>Request Resources</h3>
-
+                <h2>Request Resources</h2>
                 <input
                     type="text"
-                    placeholder="Search..."
+                    placeholder="Search resources..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="res-search-bar"
                 />
-
-                <label>Select Resources:</label>
+                <h3>Select Resources:</h3>
                 <div className="resource-list">
                     {filteredResources
-                        .sort((a, b) => b.isSelected - a.isSelected)
+                        .sort((a, b) => (selectedResources[b._id] ? 1 : 0) - (selectedResources[a._id] ? 1 : 0))
                         .map((resource) => (
-                            <div key={resource.id} className="resource-item">
-                                <div className="resources-con">
+                            <div key={resource._id} className="resource-item">
+                                <label className="resourcename">
                                     <input
                                         type="checkbox"
-                                        checked={resource.isSelected}
+                                        checked={!!selectedResources[resource._id]}
                                         onChange={(e) =>
-                                            handleResourceChange(resource.id, 'isSelected', e.target.checked)
+                                            handleResourceChange(resource._id, e.target.checked)
                                         }
                                     />
-                                    <span className="resourcename">{resource.name}</span>
-                                </div>
-                                {resource.isSelected && (
+                                    {resource.name}
+                                </label>
+                                {selectedResources[resource._id] && (
                                     <input
                                         type="number"
-                                        placeholder="Quantity"
-                                        value={resource.quantity}
+                                        value={selectedResources[resource._id].quantity}
                                         onChange={(e) =>
-                                            handleResourceChange(resource.id, 'quantity', e.target.value)
+                                            handleQuantityChange(resource._id, e.target.value)
                                         }
                                         min="1"
                                     />
@@ -80,7 +108,6 @@ const ReqResources = ({ isVisible, onClose, onSave }) => {
                             </div>
                         ))}
                 </div>
-
                 <div className="req-resources-actions">
                     <button onClick={handleSubmit}>Send Request</button>
                     <button onClick={onClose}>Cancel</button>

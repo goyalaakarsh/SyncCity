@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Sendbird from 'sendbird';
 import axios from 'axios';
 import './Discussions.css'
@@ -14,6 +14,7 @@ const Discussions = () => {
   const [messages, setMessages] = useState([]); // Store the messages in the chat area
   const [newMessage, setNewMessage] = useState(''); // Store the message to be sent
   const [user, setUser] = useState(null); // State to store the user object
+  const chatEndRef = useRef(null);
 
 
   useEffect(() => {
@@ -134,7 +135,10 @@ const Discussions = () => {
     sb.addChannelHandler('unique_handler_id', handler);
   };
 
-  
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   return (
     <div className="maincon">
       <div className="discuss-topcon">
@@ -176,6 +180,7 @@ const Discussions = () => {
                   </div>
                 </div>
               ))}
+               <div ref={chatEndRef} />
             </div>
           </div>
 
