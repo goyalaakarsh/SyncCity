@@ -1,5 +1,6 @@
 import Department from "../models/department.model.js";
 import User from "../models/user.model.js";
+import Project from "../models/project.model.js";
 import {errorHandler} from '../utils/error.js';
 
 export const getDepartment = async (req, res, next) => {
@@ -40,6 +41,46 @@ export const getMembersByDepartments = async (req, res, next) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
+export const getMembersByDepartment = async (req, res, next) => {
+    try {
+
+        const { departmentId } = req.body;
+        console.log("Got It ", departmentId);
+        
+        // Fetch members who belong to any of the given departments
+        const members = await User.find({ depId: departmentId }).select('name _id'); // Adjust fields as needed
+        console.log(members);
+        
+        res.status(200).json(members);
+    } catch (error) {
+        console.error('Error fetching members by departments:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+export const getProjectsByDepartment = async (req, res, next) => {
+    try {
+        const { departmentId } = req.body;
+        console.log("Got It ", departmentId);
+        
+        // Fetch projects that belong to the given department
+        const projects = await Project.find({ depId: { $in: [departmentId]} }).select('name _id description location startDate endDate'); // Adjust fields as needed
+        console.log(projects);
+        
+        if (!projects.length) {
+            return res.status(404).json({ message: 'No projects found for the provided department' });
+        }
+        
+        res.status(200).json(projects);
+    } catch (error) {
+        console.error('Error fetching projects by department:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 
 export const createDepartment = async (req, res, next) => {
     try {

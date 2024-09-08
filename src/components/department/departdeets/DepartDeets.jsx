@@ -94,7 +94,7 @@ const DepartDeets = ({ department, onDelete }) => {
                     </div>
                     <span>{adminName}</span>
                 </div>
-                <div className="depart-info-items">
+                {/* <div className="depart-info-items">
                     <div className="info-icon">
                         <i className="fa-solid fa-diagram-project"></i>
                     </div>
@@ -105,7 +105,7 @@ const DepartDeets = ({ department, onDelete }) => {
                         <i className="fas fa-user-group"></i>
                     </div>
                     <span>{members} Members</span>
-                </div>
+                </div> */}
             </div>
 
             <div className="depart-desc">

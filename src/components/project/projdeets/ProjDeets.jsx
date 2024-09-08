@@ -138,7 +138,8 @@ const ProjDeets = () => {
             </div>
 
             <div className="proj-actions">
-                <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with team</button>
+                <a href="/discussions">                <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with team</button></a>
+
                 <button className="discussbtn mainbtn" onClick={handleReqResourcesOpen}><i className="fa-solid fa-hand"></i>Request Resources</button>
             </div>
 
@@ -161,12 +162,12 @@ const ProjDeets = () => {
                     </div>
                     <span>{new Date(project.startDate).toLocaleDateString()} - {new Date(project.endDate).toLocaleDateString()}</span>
                 </div>
-                <div className="proj-info-items">
+                {/* <div className="proj-info-items">
                     <div className="info-icon">
                         <i className="fas fa-user-group"></i>
                     </div>
                     <span>39 Members</span>
-                </div>
+                </div> */}
             </div>
 
             <div className="proj-depart">
