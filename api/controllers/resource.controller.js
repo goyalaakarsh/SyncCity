@@ -73,13 +73,19 @@ export const reduceResource = async (req, res) => {
 
 export const getSpecificResources = async (req, res) => {
     try {
+        console.log("Received resources from frontend:", req.body.resources);  // Debugging log
+
         const { resources } = req.body;
         const resourceNames = resources.map(r => r.name);
         
         const foundResources = await Resource.find({ name: { $in: resourceNames } });
-        
+
+        console.log("Found resources in DB:", foundResources);  // Debugging log
+
         const result = foundResources.map(resource => {
             const requestedResource = resources.find(r => r.name === resource.name);
+            console.log(`Matching resource: ${resource.name}, requested quantity: ${requestedResource ? requestedResource.quantity : 'not found'}`);  // Debugging log
+            
             return {
                 ...resource.toObject(),
                 requestedQuantity: requestedResource ? requestedResource.quantity : 0

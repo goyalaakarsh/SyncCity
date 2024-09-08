@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ReqResources.css';
+import { useParams } from 'react-router-dom';
 
 const ReqResources = ({ isVisible, onClose, onSave }) => {
     const [inventory, setInventory] = useState([]);
     const [selectedResources, setSelectedResources] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
-
+    const { id } = useParams();  // Assuming your route is something like '/project/:id'
+    
     useEffect(() => {
         const fetchResources = async () => {
             try {
@@ -48,21 +50,25 @@ const ReqResources = ({ isVisible, onClose, onSave }) => {
                     console.error(`Resource with id ${id} not found in inventory`);
                     return null;
                 }
-                return { id, name: resource.name, quantity };
+                return { name: resource.name, quantity };  // Only send name and quantity
             })
             .filter(Boolean);
-
-        console.log("Requested resources", requestedResources);
-
+        
+        console.log(requestedResources); // Ensure this is correct
+    
         try {
-            const response = await axios.post('http://localhost:3000/api/resource/specific', { resources: requestedResources });
-            console.log("Response resources", response);
-
-            onSave(response.data);
+            const response = await axios.post('http://localhost:3000/api/notification/create', {
+                resources: requestedResources,
+                projectId: id  // Use the ID from useParams
+            });
+            console.log("Notifications created:", response.data);
+    
+            onSave(response.data);  // Optional callback after saving
         } catch (error) {
-            console.error('Error sending resource request:', error);
+            console.error('Error sending notifications:', error);
         }
     };
+    
 
     const filteredResources = inventory.filter(resource =>
         resource.name.toLowerCase().includes(searchQuery.toLowerCase())

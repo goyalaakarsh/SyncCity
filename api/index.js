@@ -49,7 +49,7 @@ app.use('/api/aiml', summarizerRouter);
 app.use('/api/chat', chatRouter)
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/resource', resourceRouter);
-app.use('/api/nofication', notificationRouter);
+app.use('/api/notification', notificationRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

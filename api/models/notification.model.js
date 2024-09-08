@@ -13,13 +13,6 @@ const notificationSchema = new mongoose.Schema({
     projectId:{ 
         type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true
     },
-    depId: [
-        { //dep id and manager id made false for now
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Department',
-        // required: true,
-    }
-    ],
     status: { type: String, enum: ['Pending', 'Approved', 'Denied'], default: 'Pending' },
 }, {timestamps: true});
 
