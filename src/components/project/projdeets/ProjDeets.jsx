@@ -161,12 +161,12 @@ const ProjDeets = () => {
                     </div>
                     <span>{new Date(project.startDate).toLocaleDateString()} - {new Date(project.endDate).toLocaleDateString()}</span>
                 </div>
-                <div className="proj-info-items">
+                {/* <div className="proj-info-items">
                     <div className="info-icon">
                         <i className="fas fa-user-group"></i>
                     </div>
                     <span>39 Members</span>
-                </div>
+                </div> */}
             </div>
 
             <div className="proj-depart">
