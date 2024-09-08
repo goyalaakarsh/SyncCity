@@ -13,7 +13,6 @@ const EventList = () => {
                 <EventListCard />
                 <EventListCard />
                 <EventListCard />
-                <EventListCard />
             </div>
 
             <div className="conductedevents">
@@ -22,6 +21,7 @@ const EventList = () => {
                     <span>Conducted</span>
                 </span>
 
+                <EventListCard />
                 <EventListCard />
                 <EventListCard />
                 <EventListCard />

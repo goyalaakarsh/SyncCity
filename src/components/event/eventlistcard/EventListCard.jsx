@@ -4,7 +4,7 @@ import './EventListCard.css'
 const EventListCard = () => {
     return (
         <div className='eventlistcard card'>
-            <h6 className="event-name">Name of the event</h6>
+            <h6 className="event-name">Urban Sustainability Summit 2024</h6>
             <div className="eventcard-tags">
                 <span className='p-tag'>
                     <i className="tag-icon far fa-calendar-alt"></i>
