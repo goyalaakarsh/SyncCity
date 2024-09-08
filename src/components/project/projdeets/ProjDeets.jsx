@@ -138,7 +138,8 @@ const ProjDeets = () => {
             </div>
 
             <div className="proj-actions">
-                <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with team</button>
+                <a href="/discussions">                <button className="discussbtn mainbtn"><i className="fa-solid fa-comments"></i>Discuss with team</button></a>
+
                 <button className="discussbtn mainbtn" onClick={handleReqResourcesOpen}><i className="fa-solid fa-hand"></i>Request Resources</button>
             </div>
 
