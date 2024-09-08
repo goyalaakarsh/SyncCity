@@ -53,20 +53,16 @@ const ProjectCard = ({ _id, name, startDate, endDate, location, state, managerId
 
     const getStatusLabel = (state) => {
         switch (state) {
-            case 0: return 'Delayed';
-            case 1: return 'In Progress';
-            case 2: return 'Completed';
-            case 3: return 'Upcoming';
+            case 0: return 'In Progress';
+            case 1: return 'Completed';
             default: return 'Unknown';
         }
     };
 
     const getStatusClass = () => {
         switch (state) {
-            case 0: return 'r-tag'; // Delayed
-            case 1: return 'b-tag'; // In Progress
-            case 2: return 'g-tag'; // Completed
-            case 3: return 'y-tag'; // Upcoming
+            case 0: return 'b-tag'; 
+            case 1: return 'g-tag'; 
             default: return '';
         }
     };
